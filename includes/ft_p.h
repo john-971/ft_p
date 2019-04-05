@@ -15,7 +15,7 @@
 
 
 
-//A SUPPRIMER ?
+//A SUPPRIMER !
 #include <errno.h>
 #include <string.h>
 
