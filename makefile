@@ -22,39 +22,44 @@ CFLAGS =   $(INCLUDES)
 
 LIBS = -L libft/ -lft -lm
 
-SRC_SERVER =./main.c
+SRC_SERVER = ./serveur/main.c \
+			./common/parse_message.c
 
-#SRC_CLIENT =
+SRC_CLIENT = ./cli/main.c \
+			./common/parse_message.c
 
 
 OBJ_SERVER = $(SRC_SERVER:.c=.o)
-#OBJ_CLIENT = $(SRC_CLIENT:.c=.o)
+OBJ_CLIENT = $(SRC_CLIENT:.c=.o)
 
-.PHONY: clean fclean re
+all: $libft $(NAME_SERVER) $(NAME_CLIENT)
 
-all: $(NAME_SERVER) #$(NAME_CLIENT)
+$libft:
+#	make -C libft/
 
 $(NAME_SERVER): $(OBJ_SERVER)
-	make -C libft/
+#	make -C libft/
 	$(CC) $(OBJ_SERVER) -o $(NAME_SERVER) $(LIBS)
 	@echo "\033[36m◉ \033[33mmake server is done\033[0m"
 
 $(NAME_CLIENT): $(OBJ_CLIENT)
-	make -C libft/
+#	make -C libft/
 	$(CC) $(OBJ_CLIENT) -o $(NAME_CLIENT) $(LIBS)
 	@echo "\033[36m◉ \033[33mmake client is done\033[0m"
 
 clean:
 	rm -f $(OBJ_CLIENT)
 	rm -f $(OBJ_CLIENT)
-	make clean -C libft/
+#	make clean -C libft/
 	@echo "\033[36m◉ \033[33mclean done\033[0m"
 
 fclean: clean
 	rm -f $(NAME_SERVER)
 	rm -f $(NAME_CLIENT)
-	make fclean -C libft/
+#	make fclean -C libft/
 	@echo "\033[36m◉ \033[33mfclean done\033[0m"
 
 
 re: fclean all
+
+.PHONY: clean fclean re
