@@ -21,6 +21,7 @@
 #define CMD_SIZE 5
 
 #define V_LOGIN "Login"
+#define V_PASS "Password"
 
 
 typedef struct	s_info{
@@ -42,6 +43,7 @@ typedef struct	s_info{
 /**
  ** parse_message.c
 **/
-void		send_message(char *type, char *value, int sock);
+void				send_message(char *type, char *value, int sock);
+int					listen_sock(int sock, char *buff);
 
 #endif

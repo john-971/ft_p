@@ -17,3 +17,22 @@ void		send_message(char *type, char *value, int sock)
 	printf("TRAME : %s\n", trame);
 	send(sock, trame, size + (CMD_SIZE * 2), 0);
 }
+
+
+int					listen_sock(int sock, char *buff)
+{
+	int					r;
+
+	r = recv(sock, buff, 1023, 0);
+	buff[r] = '\0';
+	if (ft_strstr(buff + (r - CMD_SIZE), T_END) != NULL)
+	{
+		printf("CORRECT TRANSMISSION\n");
+		return (0);
+	}
+	else
+	{
+		printf("BAD TRANSMISSION !!!!!!!\n");
+		return (-1);
+	}
+}

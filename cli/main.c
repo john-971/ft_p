@@ -46,39 +46,46 @@ int 					create_client(char *addr, int port)
 //	{}
 //}
 
-//void					manage_login(int sock)
-//{
-//	char 				*u_input;
-//	int					r;
-//
-//	while (1)
-//	{
-//		ft_putstr("Login, password : ");
-//		get_next_line(0, &u_input);
-//		if (ft_strlen(&u_input) > 1)
-//		{
-//			send_message(T_CMD, u_input);
-//			while ((r = read(m_sock, s_input, 1023)) > 0)
-//			{
-//
-//			}
-//		}
-//	}
-//}
+void					manage_login(int sock)
+{
+	char 				*u_input;
+	int					r;
+
+
+		get_next_line(0, &u_input);
+		if (ft_strlen(u_input) > 1)
+		{
+			send_message(T_CMD, u_input, sock);
+		}
+
+}
 
 void					parse_msg(char *msg, int sock)
 {
 	char				*value;
 
-	if (ft_memcpy(msg, T_CMD, CMD_SIZE))
+	if (ft_memcmp(msg, T_CMD, CMD_SIZE) == 0)
 	{
-		printf("DEBUG : IS A COMMAND\n");
 		value = msg + CMD_SIZE;
-		if (ft_memcpy(value, V_LOGIN, ft_strlen(V_LOGIN)))
+		printf("DEBUG : IS A COMMAND : %s\n", value);
+		if (ft_memcmp(value, V_LOGIN, ft_strlen(V_LOGIN)) == 0)
 		{
 			printf("DEBUG : LOGIN COMMAND\n");
-//			manage_login(sock);
+			ft_putstr("Login :");
+			manage_login(sock);
 		}
+		else if (ft_memcmp(value, V_PASS, ft_strlen(V_PASS)) == 0)
+		{
+			printf("DEBUG : PASSWORD COMMAND\n");
+			ft_putstr("Password :");
+			manage_login(sock);
+		}
+		else{
+			printf("DEBUG : COMMAND UNKNOW\n");
+		}
+	}
+	else{
+		printf("DEBUG : TYPE UNKNOW\n");
 	}
 }
 
@@ -91,22 +98,22 @@ void					main_process(int m_sock, uint32_t cslen, struct sockaddr_in csin)
 
 	while (1)
 	{
-		while ((r = recv(m_sock, s_input, 1023, 0)) > 0)
+//		r = recv(m_sock, s_input, 1023, 0);
+		if (listen_sock(m_sock, s_input) == -1)
+			break;
+//		s_input[r] = '\0';
+		printf("DEBUG : %s\n", s_input);
+		if (ft_strstr(s_input + (ft_strlen(s_input) - CMD_SIZE), T_END) != NULL)
 		{
-			s_input[r] = '\0';
-			printf("DEBUG : %s\n", s_input);
-			if (ft_strstr(s_input + (r - CMD_SIZE), T_END) != NULL)
-			{
-				parse_msg(s_input, m_sock);
-				printf("DEBUG : CORRECT TRANSMISSION\n");
-				break;
-			}
-
+			parse_msg(s_input, m_sock);
+			printf("DEBUG : CORRECT TRANSMISSION\n");
+//			break;
 		}
 
-		ft_putstr("ft_p:>");
-		get_next_line(0, &u_input);
-		write(m_sock, u_input, ft_strlen(u_input));
+
+//		ft_putstr("ft_p:>");
+//		get_next_line(0, &u_input);
+//		write(m_sock, u_input, ft_strlen(u_input));
 	}
 	close(m_sock);
 

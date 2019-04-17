@@ -40,21 +40,46 @@ int 					create_server(int port)
 	return(sock);
 }
 
-
 void					manage_login(int sock)
 {
 	char 				buff[1024];
 	int					r;
+	char 				*login;
+	char 				*password;
+	char 				*tmp;
 
+	printf("IN MANAGE LOGIN\n");
 	send_message(T_CMD, V_LOGIN, sock);
-	while ((r = recv(sock, buff, 1023, 0)) > 0)
+	listen_sock(sock, buff);
+	login = ft_strsub(ft_strchr(buff, '>'), 1, ft_strlen(buff) - (CMD_SIZE * 2));
+	printf("LOGIN : %s\n", login);
+	send_message(T_CMD, V_PASS, sock);
+	listen_sock(sock, buff);
+	password = ft_strsub(ft_strchr(buff, '>'), 1, ft_strlen(buff) - (CMD_SIZE * 2));
+	printf("PASSWORD : %s\n", password);
+
+	if (ft_strstr(login, "john") != NULL && ft_strstr(password, "bobby") != NULL)
 	{
-		buff[r] = '\0';
-		if (ft_strstr(buff + (r - CMD_SIZE), T_END) != NULL)
-		{
-			printf("CORRECT TRANSMISSION\n");
-		}
+		printf("LOGGED\n");
+		return ;
 	}
+	else
+	{
+		printf("nu nu nu nu nu nu \n");
+		manage_login(sock);
+	}
+
+//	while ((r = recv(sock, buff, 1023, 0)) > 0)
+//	{
+//		buff[r] = '\0';
+//		if (ft_strstr(buff + (r - CMD_SIZE), T_END) != NULL)
+//		{
+//			printf("CORRECT TRANSMISSION\n");
+//			login = ft_strsub(ft_strchr(buff, '>'), 1, ft_strlen(buff) - (CMD_SIZE * 2));
+//			printf("LOGIN : %s\n", login);
+//
+//		}
+//	}
 }
 
 void					main_process(int m_sock, uint32_t cslen, struct sockaddr_in csin)
@@ -71,13 +96,19 @@ void					main_process(int m_sock, uint32_t cslen, struct sockaddr_in csin)
 		if(pid == -1)
 			exit(EXIT_FAILURE);
 		printf("PID %i\n", pid);
-		if (pid != 0)
+		if (pid == 0)
 		{
 			manage_login(cs);
 			printf("Client connected %i\n", cs);
-			while ((r = recv(cs, buff, 1023, 0)) > 0)
+			while (1)
 			{
-				buff[r] = '\0';
+				if (listen_sock(cs, buff) == -1)
+					break ;
+				printf("msg receive !!!!\n");
+//				r = recv(cs, buff, 1023, 0);
+//				if (r == -1)
+//					break;
+//				buff[r] = '\0';
 				printf("%s\n", buff);
 				send(cs, "IS OK\n", 6, 0);
 			}
