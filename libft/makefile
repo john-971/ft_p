@@ -73,6 +73,7 @@ SRCS=$(DIRSRCS)ft_strlen.c \
 	$(DIRSRCS)ft_lstadd.c \
 	$(DIRSRCS)ft_lstiter.c \
 	$(DIRSRCS)ft_lstmap.c \
+	$(DIRSRCS)ft_readtab.c \
 	$(DIRSRCS)get_next_line.c
 
 OBJS=$(SRCS:.c=.o)

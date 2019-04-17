@@ -7,12 +7,6 @@ void 					usage(char *str)
 	exit(EXIT_FAILURE);
 }
 
-void					handle_connexion(int sig)
-{
-	printf("!!!!!!!!!!!!!!!!!!!!! %i\n", sig);
-//	return 1;
-}
-
 int 					create_server(int port)
 {
 	int 				sock;
@@ -25,7 +19,6 @@ int 					create_server(int port)
 	if ((sock = socket(PF_INET, SOCK_STREAM, proto->p_proto)) == -1)
 	{
 		printf("ERROR\n");
-		ft_putendl_fd(strerror(errno), 2);
 		return -1;
 	}
 	sin.sin_family = AF_INET;
@@ -40,46 +33,30 @@ int 					create_server(int port)
 	return(sock);
 }
 
-void					manage_login(int sock)
+int						manage_login(int sock)
 {
 	char 				buff[1024];
-	int					r;
 	char 				*login;
 	char 				*password;
-	char 				*tmp;
 
-	printf("IN MANAGE LOGIN\n");
-	send_message(T_CMD, V_LOGIN, sock);
-	listen_sock(sock, buff);
+	send_message(T_LOG, V_LOGIN, sock);
+	if (listen_sock(sock, buff) == -1)
+		return -1;
 	login = ft_strsub(ft_strchr(buff, '>'), 1, ft_strlen(buff) - (CMD_SIZE * 2));
-	printf("LOGIN : %s\n", login);
-	send_message(T_CMD, V_PASS, sock);
-	listen_sock(sock, buff);
+	send_message(T_LOG, V_PASS, sock);
+	if (listen_sock(sock, buff) == -1)
+		return -1;
 	password = ft_strsub(ft_strchr(buff, '>'), 1, ft_strlen(buff) - (CMD_SIZE * 2));
-	printf("PASSWORD : %s\n", password);
-
 	if (ft_strstr(login, "john") != NULL && ft_strstr(password, "bobby") != NULL)
 	{
-		printf("LOGGED\n");
-		return ;
+		send_message(T_MSG_OK, GOOD_LOG, sock);
+		return 0;
 	}
 	else
 	{
-		printf("nu nu nu nu nu nu \n");
-		manage_login(sock);
+		send_message(T_MSG_KO, BAD_LOG, sock);
+		return manage_login(sock);
 	}
-
-//	while ((r = recv(sock, buff, 1023, 0)) > 0)
-//	{
-//		buff[r] = '\0';
-//		if (ft_strstr(buff + (r - CMD_SIZE), T_END) != NULL)
-//		{
-//			printf("CORRECT TRANSMISSION\n");
-//			login = ft_strsub(ft_strchr(buff, '>'), 1, ft_strlen(buff) - (CMD_SIZE * 2));
-//			printf("LOGIN : %s\n", login);
-//
-//		}
-//	}
 }
 
 void					main_process(int m_sock, uint32_t cslen, struct sockaddr_in csin)
@@ -88,7 +65,6 @@ void					main_process(int m_sock, uint32_t cslen, struct sockaddr_in csin)
 	char				buff[1024];
 	int					r;
 	int 				pid;
-	t_info				info;
 
 	while ((cs = accept(m_sock, (struct sockaddr*)&csin, &cslen)) != -1)
 	{
@@ -98,19 +74,20 @@ void					main_process(int m_sock, uint32_t cslen, struct sockaddr_in csin)
 		printf("PID %i\n", pid);
 		if (pid == 0)
 		{
-			manage_login(cs);
-			printf("Client connected %i\n", cs);
-			while (1)
+			if (manage_login(cs) == 0)
 			{
-				if (listen_sock(cs, buff) == -1)
-					break ;
-				printf("msg receive !!!!\n");
-//				r = recv(cs, buff, 1023, 0);
-//				if (r == -1)
-//					break;
-//				buff[r] = '\0';
-				printf("%s\n", buff);
-				send(cs, "IS OK\n", 6, 0);
+				printf("Client connected %i\n", cs);
+				while (1)
+				{
+					if (listen_sock(cs, buff) == -1)
+						break ;
+					char *test = ft_strdup(buff);
+
+					if (manage_command(cs, test) == -1)
+						break ;
+//					printf("%s\n", test);
+//					send_message(T_MSG_OK, "IS OK", cs);
+				}
 			}
 			printf("Close connection for %i\n", cs);
 			close (cs);

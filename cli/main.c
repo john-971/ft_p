@@ -1,5 +1,7 @@
 #include "../includes/ft_p.h"
 
+
+
 //attention au port qui peut etre deja pris
 void 					usage(char *str)
 {
@@ -25,7 +27,6 @@ int 					create_client(char *addr, int port)
 	if ((sock = socket(PF_INET, SOCK_STREAM, proto->p_proto)) == -1)
 	{
 		printf("ERROR\n");
-		ft_putendl_fd(strerror(errno), 2);
 		return -1;
 	}
 	sin.sin_family = AF_INET;
@@ -46,54 +47,79 @@ int 					create_client(char *addr, int port)
 //	{}
 //}
 
-void					manage_login(int sock)
+void					manage_login(int sock, char *msg_value)
 {
 	char 				*u_input;
 	int					r;
 
-
-		get_next_line(0, &u_input);
-		if (ft_strlen(u_input) > 1)
-		{
-			send_message(T_CMD, u_input, sock);
-		}
-
+	if (ft_memcmp(msg_value, V_LOGIN, ft_strlen(V_LOGIN)) == 0)
+		ft_putstr("Login :");
+	else if (ft_memcmp(msg_value, V_PASS, ft_strlen(V_PASS)) == 0)
+		ft_putstr("Password :");
+	get_next_line(0, &u_input);
+	if (ft_strlen(u_input) > 0)
+		send_message(T_LOG, u_input, sock);
+	else
+		manage_login(sock, msg_value);
 }
 
-void					parse_msg(char *msg, int sock)
+int					parse_msg(char *msg, int sock)
 {
 	char				*value;
 
-	if (ft_memcmp(msg, T_CMD, CMD_SIZE) == 0)
+	value = msg + CMD_SIZE;
+	if (ft_memcmp(msg, T_LOG, CMD_SIZE) == 0)
 	{
-		value = msg + CMD_SIZE;
-		printf("DEBUG : IS A COMMAND : %s\n", value);
-		if (ft_memcmp(value, V_LOGIN, ft_strlen(V_LOGIN)) == 0)
-		{
-			printf("DEBUG : LOGIN COMMAND\n");
-			ft_putstr("Login :");
-			manage_login(sock);
-		}
-		else if (ft_memcmp(value, V_PASS, ft_strlen(V_PASS)) == 0)
-		{
-			printf("DEBUG : PASSWORD COMMAND\n");
-			ft_putstr("Password :");
-			manage_login(sock);
-		}
-		else{
-			printf("DEBUG : COMMAND UNKNOW\n");
-		}
+//		printf("DEBUG : LOGIN COMMAND : %s\n", value);
+		manage_login(sock, value);
+		return (1);
+	}
+	else if (ft_memcmp(msg, T_MSG_KO, CMD_SIZE) == 0)
+	{
+		/*
+		 * EN CAS DE MESSAGE D'ERREUR AUTRE QUE LE LOGIN, IL FAUT RENDRE LE PROMPT
+		 */
+		value = ft_strsub(value, 0, ft_strlen(value) - CMD_SIZE);
+		print_error(value);
+		free(value);
+		return (1);
+	}
+	else if (ft_memcmp(msg, T_MSG_OK, CMD_SIZE) == 0)
+	{
+		value = ft_strsub(value, 0, ft_strlen(value) - CMD_SIZE);
+		print_succes(value);
+		free(value);
+		return (0);
 	}
 	else{
 		printf("DEBUG : TYPE UNKNOW\n");
 	}
+	return (0);
+}
+
+void					prompt(int sock)
+{
+	char 				*u_input;
+	char 				*cmd;
+
+	ft_putstr("ft_p:>");
+	get_next_line(0, &u_input);
+	if (ft_strlen(u_input) > 0)
+	{
+		if (parse_command(u_input, sock) == 0)
+			return ;
+		else
+			prompt(sock);
+	}
+	prompt(sock);
+
+
 }
 
 void					main_process(int m_sock, uint32_t cslen, struct sockaddr_in csin)
 {
 
 	char 				s_input[1024];
-	char 				*u_input;
 	int 				r;
 
 	while (1)
@@ -105,15 +131,18 @@ void					main_process(int m_sock, uint32_t cslen, struct sockaddr_in csin)
 		printf("DEBUG : %s\n", s_input);
 		if (ft_strstr(s_input + (ft_strlen(s_input) - CMD_SIZE), T_END) != NULL)
 		{
-			parse_msg(s_input, m_sock);
+			if (parse_msg(s_input, m_sock) == 0)
+			{
+				prompt(m_sock);
+//				ft_putstr("ft_p:>");
+//				get_next_line(0, &u_input);
+//				if (ft_strlen(u_input) > 0)
+//					send_message(T_CMD, u_input, m_sock);
+//				else
+//					send_message(T_CMD, "TAMERE", m_sock); //PAS BEAU
+			}
 			printf("DEBUG : CORRECT TRANSMISSION\n");
-//			break;
 		}
-
-
-//		ft_putstr("ft_p:>");
-//		get_next_line(0, &u_input);
-//		write(m_sock, u_input, ft_strlen(u_input));
 	}
 	close(m_sock);
 

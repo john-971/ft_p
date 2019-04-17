@@ -14,20 +14,22 @@ void		send_message(char *type, char *value, int sock)
 	ft_memcpy(trame + CMD_SIZE + size, T_END, CMD_SIZE);
 	trame[size + (CMD_SIZE * 2) + 1] = '\0';
 
-	printf("TRAME : %s\n", trame);
+//	printf("TRAME : %s\n", trame);
 	send(sock, trame, size + (CMD_SIZE * 2), 0);
+	free(trame);
 }
 
 
 int					listen_sock(int sock, char *buff)
 {
 	int					r;
-
+	printf("ON LISTEN !!!!\n");
 	r = recv(sock, buff, 1023, 0);
 	buff[r] = '\0';
+//	printf("DEBUG LISTEN SOCK %s \n", buff);
 	if (ft_strstr(buff + (r - CMD_SIZE), T_END) != NULL)
 	{
-		printf("CORRECT TRANSMISSION\n");
+//		printf("CORRECT TRANSMISSION\n");
 		return (0);
 	}
 	else
