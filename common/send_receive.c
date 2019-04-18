@@ -24,7 +24,7 @@ int					listen_sock(int sock, char *buff)
 {
 	int					r;
 	printf("ON LISTEN !!!!\n");
-	r = recv(sock, buff, 1023, 0);
+	r = recv(sock, buff, TRANS_SIZE, 0);
 	buff[r] = '\0';
 //	printf("DEBUG LISTEN SOCK %s \n", buff);
 	if (ft_strstr(buff + (r - CMD_SIZE), T_END) != NULL)

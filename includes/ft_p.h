@@ -12,9 +12,10 @@
 #include <string.h>
 #include <dirent.h>
 #include <limits.h>
+#include <fcntl.h>
 
 
-
+#define TRANS_SIZE 1023
 #define RET_KO 0
 #define RET_OK 1
 

@@ -119,7 +119,7 @@ void					prompt(int sock)
 void					main_process(int m_sock, uint32_t cslen, struct sockaddr_in csin)
 {
 
-	char 				s_input[1024];
+	char 				s_input[TRANS_SIZE + 1];
 	int 				r;
 
 	while (1)

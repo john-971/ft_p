@@ -35,7 +35,7 @@ int 					create_server(int port)
 
 int						manage_login(int sock)
 {
-	char 				buff[1024];
+	char 				buff[TRANS_SIZE + 1];
 	char 				*login;
 	char 				*password;
 
@@ -62,7 +62,7 @@ int						manage_login(int sock)
 void					main_process(int m_sock, uint32_t cslen, struct sockaddr_in csin)
 {
 	int 				cs;
-	char				buff[1024];
+	char				buff[TRANS_SIZE + 1];
 	int					r;
 	int 				pid;
 

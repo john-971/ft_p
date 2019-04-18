@@ -16,11 +16,22 @@ int				find_char_at(char *str, int tofind)
 	return ft_strlen(str);
 }
 
+int					create_file()
+{
+	int 			fd;
+
+	fd = open("/tmp/ls", O_CREAT | O_WRONLY | O_TRUNC, 0666);
+	if (fd == -1)
+		printf("ERREUR DANS LA CREATION DU FICHIER TMP\n");
+	return fd;
+}
+
 void				ls_command(int sock)
 {
 	DIR				*dip;
 	struct dirent	*dit;
 	char 			cwd[PATH_MAX];
+	int 			fd;
 
 	printf("IN LS COMMAND \n");
 	if(getcwd(cwd, sizeof(cwd)) == NULL)
@@ -31,12 +42,15 @@ void				ls_command(int sock)
 		send_message(T_MSG_KO, ERROR_OPEN, sock);
 		return;
 	}
+	fd = create_file();
 	while ((dit = readdir(dip)) != NULL)
 	{
+		write(fd, dit->d_name, ft_strlen(dit->d_name));
+		write(fd, "\n", 1);
 		printf("DIR NAME %s\n", dit->d_name);
 	}
-
-	//ICI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! reste a renvoyer les infos (avec la taille ?)
+	close(fd);
+	closedir(dip);
 
 }
 
