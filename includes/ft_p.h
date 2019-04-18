@@ -50,7 +50,7 @@ typedef struct 	s_trame
 #define GOOD_LOG "Login ok !"
 #define PARAM_MISSING "Il manque un param pour la commande"
 #define ERROR_OPEN "Une erreur est survenu dans l'ouverture du dossier"
-
+#define COMMAND_NOT_FOUND "Commande inconnue (ls/cd/pwd/get/put)"
 
 
 #include "../libft/includes/libft.h"

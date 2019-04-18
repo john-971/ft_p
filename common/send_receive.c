@@ -20,7 +20,7 @@ void		send_command(char *type, char *value, int sock)
 {
 	int		size;
 	t_trame trame;
-
+	printf("DEBUUUUUUG : %s\n", type);
 	ft_bzero(&trame, sizeof(t_trame));
 	ft_memcpy(trame.type, type, CMD_SIZE);
 	trame.type[5] = '\0';

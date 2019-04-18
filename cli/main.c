@@ -102,8 +102,6 @@ void					prompt(int sock)
 	{
 		if (parse_command(u_input, sock) == 0)
 			return ;
-		else
-			prompt(sock);
 	}
 	prompt(sock);
 

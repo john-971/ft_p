@@ -7,9 +7,9 @@ int		parse_command(char *input, int sock)
 //	printf("PARSE COMMANDS :\n");
 	commands = ft_strsplit(input, ' ');
 //	ft_read_tab(commands);
-	if (ft_memcmp(commands[0], "ls", 2) == 0)
+	if (ft_memcmp(commands[0], "ls", ft_strlen(commands[0])) == 0)
 		send_command(T_LS, input, sock);
-	else if (ft_memcmp(commands[0], "pwd", 3))
+	else if (ft_memcmp(commands[0], "pwd", 3) == 0)
 		send_command(T_PWD, input, sock);
 	else if (ft_memcmp(commands[0], "cd", 2) == 0)
 	{
@@ -21,5 +21,11 @@ int		parse_command(char *input, int sock)
 			return -1;
 		}
 	}
+	else
+	{
+		print_error(COMMAND_NOT_FOUND);
+		return (1);
+	}
+
 	return 0;
 }
