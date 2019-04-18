@@ -8,13 +8,13 @@ int		parse_command(char *input, int sock)
 	commands = ft_strsplit(input, ' ');
 //	ft_read_tab(commands);
 	if (ft_memcmp(commands[0], "ls", 2) == 0)
-		send_message(T_LS, input, sock);
+		send_command(T_LS, input, sock);
 	else if (ft_memcmp(commands[0], "pwd", 3))
-		send_message(T_PWD, input, sock);
+		send_command(T_PWD, input, sock);
 	else if (ft_memcmp(commands[0], "cd", 2) == 0)
 	{
 		if (commands[1] && ft_strlen(commands[1]) > 0)
-			send_message(T_CD, input, sock);
+			send_command(T_CD, input, sock);
 		else
 		{
 			print_error(PARAM_MISSING);

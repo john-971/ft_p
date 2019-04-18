@@ -35,25 +35,29 @@ int 					create_server(int port)
 
 int						manage_login(int sock)
 {
-	char 				buff[TRANS_SIZE + 1];
+	t_trame				trame;
 	char 				*login;
 	char 				*password;
 
-	send_message(T_LOG, V_LOGIN, sock);
-	if (listen_sock(sock, buff) == -1)
+	send_command(T_LOG, V_LOGIN, sock);
+	if ((trame = listen_sock(sock)).error == 1)
 		return -1;
-	login = ft_strsub(ft_strchr(buff, '>'), 1, ft_strlen(buff) - (CMD_SIZE * 2));
-	send_message(T_LOG, V_PASS, sock);
-	if (listen_sock(sock, buff) == -1)
+	login = ft_strdup(trame.value);
+	send_command(T_LOG, V_PASS, sock);
+	if ((trame = listen_sock(sock)).error == 1)
 		return -1;
-	password = ft_strsub(ft_strchr(buff, '>'), 1, ft_strlen(buff) - (CMD_SIZE * 2));
+	password = ft_strdup(trame.value);
 	if (ft_strstr(login, "john") != NULL && ft_strstr(password, "bobby") != NULL)
 	{
 		send_message(T_MSG_OK, GOOD_LOG, sock);
+		free(login);
+		free(password);
 		return 0;
 	}
 	else
 	{
+		free(login);
+		free(password);
 		send_message(T_MSG_KO, BAD_LOG, sock);
 		return manage_login(sock);
 	}
@@ -62,7 +66,7 @@ int						manage_login(int sock)
 void					main_process(int m_sock, uint32_t cslen, struct sockaddr_in csin)
 {
 	int 				cs;
-	char				buff[TRANS_SIZE + 1];
+	t_trame				trame;
 	int					r;
 	int 				pid;
 
@@ -79,14 +83,11 @@ void					main_process(int m_sock, uint32_t cslen, struct sockaddr_in csin)
 				printf("Client connected %i\n", cs);
 				while (1)
 				{
-					if (listen_sock(cs, buff) == -1)
+					if ((trame = listen_sock(cs)).error == 1)
 						break ;
-					char *test = ft_strdup(buff);
 
-					if (manage_command(cs, test) == -1)
+					if (manage_command(cs, trame) == -1)
 						break ;
-//					printf("%s\n", test);
-//					send_message(T_MSG_OK, "IS OK", cs);
 				}
 			}
 			printf("Close connection for %i\n", cs);

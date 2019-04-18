@@ -19,8 +19,9 @@
 #define RET_KO 0
 #define RET_OK 1
 
-#define T_MSG_OK "<MS0>"
-#define T_MSG_KO "<MS1>"
+#define T_MSG	"<MSG>"
+#define T_MSG_OK 0
+#define T_MSG_KO 1
 
 #define T_LOG 	"<LOG>"
 #define	T_CMD 	"<CMD>"
@@ -30,6 +31,15 @@
 #define T_LS  	"<LIS>"
 #define T_CD 	"<CWD>"
 #define T_PWD 	"<PWD>"
+
+
+typedef struct 	s_trame
+{
+	char		type[6];
+	uint8_t 	type_msg;
+	char 		value[1024];
+	int			error;
+}				t_trame;
 
 
 #define CMD_SIZE 5
@@ -51,15 +61,16 @@
 **/
 
 /**
- ** parse_message.c
+ ** send_receive.c
 **/
-void					send_message(char *type, char *value, int sock);
-int						listen_sock(int sock, char *buff);
+void					send_message(uint8_t type_message, char *value, int sock);
+void					send_command(char *type, char *value, int sock);
+t_trame					listen_sock(int sock);
 
 /**
  ** server_command.c
 **/
-int						manage_command(int cs, char *buff);
+int						manage_command(int cs, t_trame trame);
 
 
 

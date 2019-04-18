@@ -58,38 +58,32 @@ void					manage_login(int sock, char *msg_value)
 		ft_putstr("Password :");
 	get_next_line(0, &u_input);
 	if (ft_strlen(u_input) > 0)
-		send_message(T_LOG, u_input, sock);
+		send_command(T_LOG, u_input, sock);
 	else
 		manage_login(sock, msg_value);
 }
 
-int					parse_msg(char *msg, int sock)
+int					parse_msg(t_trame trame, int sock)
 {
 	char				*value;
 
-	value = msg + CMD_SIZE;
-	if (ft_memcmp(msg, T_LOG, CMD_SIZE) == 0)
+
+	if (ft_memcmp(trame.type, T_LOG, CMD_SIZE) == 0)
 	{
 //		printf("DEBUG : LOGIN COMMAND : %s\n", value);
-		manage_login(sock, value);
+		manage_login(sock, trame.value);
 		return (1);
 	}
-	else if (ft_memcmp(msg, T_MSG_KO, CMD_SIZE) == 0)
+	else if (ft_memcmp(trame.type, T_MSG, CMD_SIZE) == 0)
 	{
-		/*
-		 * EN CAS DE MESSAGE D'ERREUR AUTRE QUE LE LOGIN, IL FAUT RENDRE LE PROMPT
-		 */
-		value = ft_strsub(value, 0, ft_strlen(value) - CMD_SIZE);
-		print_error(value);
-		free(value);
-		return (1);
-	}
-	else if (ft_memcmp(msg, T_MSG_OK, CMD_SIZE) == 0)
-	{
-		value = ft_strsub(value, 0, ft_strlen(value) - CMD_SIZE);
-		print_succes(value);
-		free(value);
-		return (0);
+		if (trame.type_msg == T_MSG_KO)
+		{
+			print_error(trame.value);
+			if (ft_memcmp(trame.value, BAD_LOG, ft_strlen(BAD_LOG)) == 0)
+				return (1);
+		}
+		else
+			print_succes(trame.value);
 	}
 	else{
 		printf("DEBUG : TYPE UNKNOW\n");
@@ -119,30 +113,21 @@ void					prompt(int sock)
 void					main_process(int m_sock, uint32_t cslen, struct sockaddr_in csin)
 {
 
-	char 				s_input[TRANS_SIZE + 1];
+	t_trame				trame;
 	int 				r;
 
+	ft_bzero(&trame, sizeof(t_trame));
 	while (1)
 	{
-//		r = recv(m_sock, s_input, 1023, 0);
-		if (listen_sock(m_sock, s_input) == -1)
+		if ((trame = listen_sock(m_sock)).error == 1)
 			break;
-//		s_input[r] = '\0';
-		printf("DEBUG : %s\n", s_input);
-		if (ft_strstr(s_input + (ft_strlen(s_input) - CMD_SIZE), T_END) != NULL)
+		printf("DEBUG : %s\n", trame.type);
+		if (parse_msg(trame, m_sock) == 0)
 		{
-			if (parse_msg(s_input, m_sock) == 0)
-			{
-				prompt(m_sock);
-//				ft_putstr("ft_p:>");
-//				get_next_line(0, &u_input);
-//				if (ft_strlen(u_input) > 0)
-//					send_message(T_CMD, u_input, m_sock);
-//				else
-//					send_message(T_CMD, "TAMERE", m_sock); //PAS BEAU
-			}
-			printf("DEBUG : CORRECT TRANSMISSION\n");
+			prompt(m_sock);
 		}
+		printf("DEBUG : CORRECT TRANSMISSION\n");
+
 	}
 	close(m_sock);
 

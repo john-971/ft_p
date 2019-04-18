@@ -1,40 +1,54 @@
 #include "../includes/ft_p.h"
 
 
-void		send_message(char *type, char *value, int sock)
+void		send_message(uint8_t type_message, char *value, int sock)
 {
 	int		size;
-	char 	*trame;
+	t_trame trame;
 
-
+	ft_bzero(&trame, sizeof(t_trame));
 	size = ft_strlen(value);
-	trame = (char *)ft_memalloc((CMD_SIZE * 2) + size + 1);
-	ft_memcpy(trame, type, CMD_SIZE);
-	ft_memcpy(trame + CMD_SIZE, value, size);
-	ft_memcpy(trame + CMD_SIZE + size, T_END, CMD_SIZE);
-	trame[size + (CMD_SIZE * 2) + 1] = '\0';
+	ft_memcpy(trame.type, T_MSG, CMD_SIZE);
+	trame.type_msg = type_message;
+	trame.type[5] = '\0';
+	ft_memcpy(trame.value, value, size);
+	trame.value[size + 1] = '\0';
+	send(sock, &trame, sizeof(trame), 0);
+}
 
-//	printf("TRAME : %s\n", trame);
-	send(sock, trame, size + (CMD_SIZE * 2), 0);
-	free(trame);
+void		send_command(char *type, char *value, int sock)
+{
+	int		size;
+	t_trame trame;
+
+	ft_bzero(&trame, sizeof(t_trame));
+	ft_memcpy(trame.type, type, CMD_SIZE);
+	trame.type[5] = '\0';
+	ft_memcpy(trame.value, value, ft_strlen(value));
+	trame.value[TRANS_SIZE] = '\0';
+
+	send(sock, &trame, sizeof(trame), 0);
 }
 
 
-int					listen_sock(int sock, char *buff)
+t_trame					listen_sock(int sock)
 {
 	int					r;
-	printf("ON LISTEN !!!!\n");
-	r = recv(sock, buff, TRANS_SIZE, 0);
-	buff[r] = '\0';
-//	printf("DEBUG LISTEN SOCK %s \n", buff);
-	if (ft_strstr(buff + (r - CMD_SIZE), T_END) != NULL)
+	char				*buff[sizeof(t_trame) + 1];
+	t_trame				*trame;
+
+//	printf("SIZEOF T_TRAME !!!! %lu\n", sizeof(t_trame));
+	r = recv(sock, buff, sizeof(t_trame), 0);
+	buff[r] = "\0";
+//	printf("DEBUG : LISTEN SOCK TRAME\n");
+	trame = (t_trame *)buff;
+	printf("DEBUG : LISTEN SOCK TRAME %i\n", r);
+	if (r <= 0)
 	{
-//		printf("CORRECT TRANSMISSION\n");
-		return (0);
+		printf("ERROR ON LISTEN SOCK\n");
+		trame->error = 1;
 	}
-	else
-	{
-		printf("BAD TRANSMISSION !!!!!!!\n");
-		return (-1);
-	}
+	return *trame;
 }
+
+

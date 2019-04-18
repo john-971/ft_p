@@ -52,16 +52,15 @@ void				ls_command(int sock)
 	close(fd);
 	closedir(dip);
 
+	send_message(T_MSG_OK, "IS OK", sock);
 }
 
-int				manage_command(int cs, char *buff)
+int				manage_command(int cs, t_trame trame)
 {
 	char		*value;
 	char 		*cmd;
 
-//	printf("DEBUG !!!!!!!!!!!!!!!!!!!!!!!!!!!!: %s\n", buff);
-	value = buff + CMD_SIZE;
-	if (ft_memcmp(buff, T_LS, CMD_SIZE) == 0)
+	if (ft_memcmp(trame.type, T_LS, CMD_SIZE) == 0)
 	{
 		printf("DEBUG : LS COMMAND\n");
 		ls_command(cs);
