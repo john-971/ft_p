@@ -32,6 +32,7 @@
 #define T_CD 	"<CWD>"
 #define T_PWD 	"<PWD>"
 
+//USHRT_MAX pour le transfert de fichiers !
 
 typedef struct 	s_trame
 {
@@ -50,6 +51,7 @@ typedef struct 	s_trame
 #define GOOD_LOG "Login ok !"
 #define PARAM_MISSING "Il manque un param pour la commande"
 #define ERROR_OPEN "Une erreur est survenu dans l'ouverture du dossier"
+#define ERROR_EXEC "Une erreur est survenu dans l'execution de la commande"
 #define COMMAND_NOT_FOUND "Commande inconnue (ls/cd/pwd/get/put)"
 
 

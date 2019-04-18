@@ -37,7 +37,7 @@ t_trame					listen_sock(int sock)
 	char				*buff[sizeof(t_trame) + 1];
 	t_trame				*trame;
 
-//	printf("SIZEOF T_TRAME !!!! %lu\n", sizeof(t_trame));
+	printf("LISTEN SOCK !!!!\n");
 	r = recv(sock, buff, sizeof(t_trame), 0);
 	buff[r] = "\0";
 //	printf("DEBUG : LISTEN SOCK TRAME\n");

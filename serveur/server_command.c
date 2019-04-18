@@ -28,31 +28,35 @@ int					create_file()
 
 void				ls_command(int sock)
 {
-	DIR				*dip;
-	struct dirent	*dit;
 	char 			cwd[PATH_MAX];
-	int 			fd;
+	char 			*test[3];
+	int 			child;
+	int 			exit_status;
 
-	printf("IN LS COMMAND \n");
-	if(getcwd(cwd, sizeof(cwd)) == NULL)
-		send_message(T_MSG_KO, ERROR_OPEN, sock);
-	printf("CWD : %s\n", cwd);
-	if ((dip = opendir(cwd)) == NULL)
+	exit_status = -1;
+	test[0] = "ls";
+	test[1] = "-lR";
+	test[2] = NULL;
+	send_command(T_LS, "IS OK", sock);
+	if ((child = fork()) > 0)
 	{
-		send_message(T_MSG_KO, ERROR_OPEN, sock);
-		return;
+		if(wait4(child, &exit_status, 0, NULL) == -1)
+			send_command(T_LS, ERROR_EXEC, sock);
 	}
-	fd = create_file();
-	while ((dit = readdir(dip)) != NULL)
+	else if (child == 0)
 	{
-		write(fd, dit->d_name, ft_strlen(dit->d_name));
-		write(fd, "\n", 1);
-		printf("DIR NAME %s\n", dit->d_name);
+		dup2(sock, STDOUT_FILENO);
+		dup2(sock, STDERR_FILENO);
+		if (execv("/bin/ls", test) != -1)
+		{
+			close(sock);
+			exit(1);
+		}
+		else{
+			close(sock);
+			exit(-1);
+		}
 	}
-	close(fd);
-	closedir(dip);
-
-	send_message(T_MSG_OK, "IS OK", sock);
 }
 
 int				manage_command(int cs, t_trame trame)

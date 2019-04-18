@@ -63,6 +63,26 @@ void					manage_login(int sock, char *msg_value)
 		manage_login(sock, msg_value);
 }
 
+void				manage_ls(int sock, t_trame trame)
+{
+	char			buff[TRANS_SIZE + 1];
+	int				r;
+
+	while (1)
+	{
+		r = recv(sock, buff, TRANS_SIZE, 0);
+		if (r == -1)
+		{
+			print_error(ERROR_EXEC);
+			return ;
+		}
+		buff[r] = '\0';
+		printf("%s", buff);
+		if(r < TRANS_SIZE)
+			break;
+	}
+}
+
 int					parse_msg(t_trame trame, int sock)
 {
 	char				*value;
@@ -73,6 +93,11 @@ int					parse_msg(t_trame trame, int sock)
 //		printf("DEBUG : LOGIN COMMAND : %s\n", value);
 		manage_login(sock, trame.value);
 		return (1);
+	}
+	else if (ft_memcmp(trame.type, T_LS, CMD_SIZE) == 0)
+	{
+		manage_ls(sock, trame);
+		return (0);
 	}
 	else if (ft_memcmp(trame.type, T_MSG, CMD_SIZE) == 0)
 	{
@@ -115,6 +140,7 @@ void					main_process(int m_sock, uint32_t cslen, struct sockaddr_in csin)
 	int 				r;
 
 	ft_bzero(&trame, sizeof(t_trame));
+
 	while (1)
 	{
 		if ((trame = listen_sock(m_sock)).error == 1)
