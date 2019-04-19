@@ -16,10 +16,7 @@ int		parse_command(char *input, int sock)
 		if (commands[1] && ft_strlen(commands[1]) > 0)
 			send_command(T_CD, commands[1], sock);
 		else
-		{
-			print_error(PARAM_MISSING);
-			return -1;
-		}
+			send_command(T_CD, "/", sock);
 	}
 	else
 	{

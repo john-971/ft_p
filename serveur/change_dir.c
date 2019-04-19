@@ -38,7 +38,17 @@ char				*manage_go_back(t_info *info, char *go_to)
 {
 	int 			go_to_lvl;
 	int 			path_lvl;
+	int 			i;
 
+	i = 0;
+	if (go_to[0] == '/' && go_to[1] != '\0')
+	{
+		while (go_to[i] && go_to[++i] != '/')
+		{
+			if (go_to[i] != info->base_path[i])
+				return NULL;
+		}
+	}
 	go_to_lvl = count_dir_level(go_to);
 	path_lvl = count_dir_level(info->path);
 	if ((path_lvl - go_to_lvl) <= info->b_path_lvl)
@@ -78,6 +88,11 @@ void				cd_command(int sock, t_trame trame, t_info *info)
 	{
 //		printf("DEBUG : FIND GO BACK IN CD\n");
 		go_to = manage_go_back(info, trame.value);
+		if (go_to == NULL)
+		{
+			send_message(T_MSG_KO, ERR_ENOENT, sock);
+			return;
+		}
 	}
 	else
 		go_to = trame.value;

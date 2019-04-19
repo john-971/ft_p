@@ -32,6 +32,7 @@ void					manage_ls(int sock)
 	int					r;
 	t_trame				*trame;
 
+	print_succes(LS_GOOD);
 	while (1)
 	{
 		r = recv(sock, buff, TRANS_SIZE, 0);
@@ -60,6 +61,7 @@ void					manage_ls(int sock)
 
 void				manage_pwd(t_trame trame)
 {
+	print_succes(PWD_GOOD);
 	printf("%s\n", trame.value);
 }
 
@@ -113,9 +115,7 @@ void					prompt(int sock, t_info	info)
 	char 				*u_input;
 	char 				*cmd;
 
-	ft_putchar('(');
-	ft_putstr(info.path);
-	ft_putstr(")ft_p:>");
+	print_prompt(info.path);
 	get_next_line(0, &u_input);
 	if (ft_strlen(u_input) > 0)
 	{

@@ -64,9 +64,11 @@ typedef struct 	s_info
 
 #define ERR_NOTDIR "Un élément du chemin d'accès n'est pas un répertoire"
 #define ERR_ACL "Impossible de lire ou de parcourir un composant du chemin"
-#define ERR_ENOENT "Le répertoire en cours a été supprimé."
-#define CWD_OK "Changement du repertoire de travail !"
+#define ERR_ENOENT "Le fichier n'existe pas."
+#define CWD_OK "Changement du répertoire de travail !"
 #define ERROR_DEFAULT "Une erreur est surevenu"
+#define LS_GOOD "Récupération du contenu du répertoire"
+#define PWD_GOOD "Récupération du répertoire courant"
 
 #include "../libft/includes/libft.h"
 
@@ -97,6 +99,7 @@ void					format_path(t_info *info, int sock, char *type);
 **/
 void					print_error(char *msg);
 void					print_succes(char *msg);
+void					print_prompt(char *path);
 
 /**
  ** cli_command.c

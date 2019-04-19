@@ -2,14 +2,23 @@
 
 void					print_error(char *msg)
 {
-	printf("\033[0;31m");
-	printf("/!\\ %s /!\\ \n", msg);
-	printf("\033[0m\n");
+	ft_putstr("\033[0;31m");
+	printf("ERROR /!\\ %s /!\\ \n", msg);
+	ft_putstr("\033[0m");
 }
 
 void					print_succes(char *msg)
 {
-	printf("\033[0;32m");
-	printf("%s \n", msg);
-	printf("\033[0m\n");
+	ft_putstr("\033[0;32m");
+	printf("SUCCESS %s \n", msg);
+	ft_putstr("\033[0m");
+}
+
+void					print_prompt(char *path)
+{
+	ft_putstr("\033[0;33m");
+	ft_putchar('(');
+	ft_putstr(path);
+	ft_putstr(")ft_p:>");
+	ft_putstr("\033[0m");
 }
