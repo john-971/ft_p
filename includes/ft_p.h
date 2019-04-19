@@ -85,6 +85,7 @@ int						manage_command(int cs, t_trame trame, t_info *info);
  ** change_dir.c
 **/
 void					cd_command(int sock, t_trame trame, t_info *info);
+void					format_path(t_info *info, int sock, char *type);
 
 /**
  **====================== CLIENT SIDE

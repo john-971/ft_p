@@ -42,18 +42,12 @@ char				*manage_go_back(t_info *info, char *go_to)
 	go_to_lvl = count_dir_level(go_to);
 	path_lvl = count_dir_level(info->path);
 	if ((path_lvl - go_to_lvl) <= info->b_path_lvl)
-	{
-//		printf("DEBUG : ON VEUX REVENIR TROP HAUT path lvl : %i, goto : %i, b_path_lvl : %i\n", path_lvl, go_to_lvl, info->b_path_lvl);
 		return (info->base_path);
-	}
 	else
-	{
-//		printf("DEBUG : ON VEUX REVENIR MAIS C OK\n");
 		return (go_to);
-	}
 }
 
-void				format_path(t_info *info, int sock)
+void				format_path(t_info *info, int sock, char *type)
 {
 	char 			*to_send;
 	int 			i;
@@ -61,20 +55,17 @@ void				format_path(t_info *info, int sock)
 	i = 0;
 	while (info->path[i] && info->base_path[i])
 	{
-//		printf("COMPAAAAARE %c : %c\n", info.path[i], info.base_path[i]);
 		if (info->path[i] == info->base_path[i])
 			i++;
 		else
 			break;
 	}
-
 	if (!info->path[i] && !info->base_path[i])
-		send_command(T_CD, "/", sock);
+		send_command(type, "/", sock);
 	else
 	{
 		to_send = ft_strsub(info->path, i, ft_strlen(info->path) - i);
-//		printf("TOSEEEEEEEEEEEND %s\n", to_send);
-		send_command(T_CD, to_send, sock);
+		send_command(type, to_send, sock);
 	}
 }
 
@@ -97,11 +88,10 @@ void				cd_command(int sock, t_trame trame, t_info *info)
 			send_message(T_MSG_KO, get_error(), sock);
 			return ;
 		}
-//		printf("CWD !!!!! %s\n", cwd);
 		ft_bzero(info->path, sizeof(info->path));
 		ft_memcpy(&info->path, cwd, ft_strlen(cwd));
-//		printf("NEW PATH %s\n", info.path);
-		format_path(info, sock);
+//		printf("DEBUG : NEW PATH %s\n", info.path);
+		format_path(info, sock, T_CD);
 	}
 	else
 		send_message(T_MSG_KO, get_error(), sock);

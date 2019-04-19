@@ -35,17 +35,6 @@ void				ls_command(int sock)
 	}
 }
 
-void				pwd_command(int sock)
-{
-	char 			cwd[PATH_MAX];
-
-	if(getcwd(cwd, sizeof(cwd)) == NULL)
-		send_message(T_MSG_KO, get_error(), sock);
-	else
-		send_command(T_PWD, cwd, sock);
-//	printf("PWD PATH : %s\n", cwd);
-}
-
 int				manage_command(int cs, t_trame trame, t_info *info)
 {
 	char		*value;
@@ -59,7 +48,7 @@ int				manage_command(int cs, t_trame trame, t_info *info)
 	else if (ft_memcmp(trame.type, T_PWD, CMD_SIZE) == 0)
 	{
 		printf("DEBUG : PWD COMMAND\n");
-		pwd_command(cs);
+		format_path(info, cs, T_PWD);
 	}
 	else if (ft_memcmp(trame.type, T_CD, CMD_SIZE) == 0)
 	{
