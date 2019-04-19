@@ -9,43 +9,6 @@ void 					usage(char *str)
 	exit(EXIT_FAILURE);
 }
 
-void					handle_connexion(int sig)
-{
-	printf("!!!!!!!!!!!!!!!!!!!!! %i\n", sig);
-//	return 1;
-}
-
-int 					create_client(char *addr, int port)
-{
-	int 				sock;
-	struct protoent		*proto;
-	struct sockaddr_in	sin;
-
-	proto = getprotobyname("tcp");
-	if (proto == 0)
-		return -1;
-	if ((sock = socket(PF_INET, SOCK_STREAM, proto->p_proto)) == -1)
-	{
-		printf("ERROR\n");
-		return -1;
-	}
-	sin.sin_family = AF_INET;
-	sin.sin_port = htons(port);
-	sin.sin_addr.s_addr = *((size_t *)(gethostbyname(addr))->h_addr_list[0]);
-	if (connect(sock, (const struct sockaddr*)&sin, sizeof(sin)) == -1)
-	{
-		printf("Connect error");
-		exit(2);
-	}
-	listen(sock, 2);	// limite le nombre de connexions simultanée
-	return(sock);
-}
-
-//int						manage_ret(char *response)
-//{
-//	if (ft_memcpy(msg, T_CMD, CMD_SIZE))
-//	{}
-//}
 
 void					manage_login(int sock, char *msg_value)
 {
@@ -63,10 +26,11 @@ void					manage_login(int sock, char *msg_value)
 		manage_login(sock, msg_value);
 }
 
-void				manage_ls(int sock, t_trame trame)
+void					manage_ls(int sock)
 {
-	char			buff[TRANS_SIZE + 1];
-	int				r;
+	char				buff[TRANS_SIZE + 1];
+	int					r;
+	t_trame				*trame;
 
 	while (1)
 	{
@@ -77,27 +41,55 @@ void				manage_ls(int sock, t_trame trame)
 			return ;
 		}
 		buff[r] = '\0';
-		printf("%s", buff);
+		trame = (t_trame *)buff;
+		if (trame->type == T_MSG)
+		{
+			print_error(trame->value);
+			break;
+		}
+		else
+			printf("%s", buff);
 		if(r < TRANS_SIZE)
 			break;
 	}
+//POUR RENVOYER UN MESSAGE OK A LA FIN DE LS
+//	r = recv(sock, buff, TRANS_SIZE, 0);
+//	trame = (t_trame *)buff;
+//	printf("DEBUG TRAME %s\n", trame->value);
 }
 
-int					parse_msg(t_trame trame, int sock)
+void				manage_pwd(t_trame trame)
+{
+	printf("%s\n", trame.value);
+}
+
+int					parse_msg(t_trame trame, int sock, t_info *info)
 {
 	char				*value;
 
 
+//	printf("DEBUG PARSE MESSAGE :type : %s | value : %s\n", trame.type, trame.value);
 	if (ft_memcmp(trame.type, T_LOG, CMD_SIZE) == 0)
 	{
-//		printf("DEBUG : LOGIN COMMAND : %s\n", value);
 		manage_login(sock, trame.value);
 		return (1);
 	}
 	else if (ft_memcmp(trame.type, T_LS, CMD_SIZE) == 0)
 	{
-		manage_ls(sock, trame);
+		manage_ls(sock);
 		return (0);
+	}
+	else if (ft_memcmp(trame.type, T_PWD, CMD_SIZE) == 0)
+	{
+		manage_pwd(trame);
+		return (0);
+	}
+	else if (ft_memcmp(trame.type, T_CD, CMD_SIZE) == 0)
+	{
+		ft_bzero(info->path, sizeof(info->path));
+		ft_memcpy(info->path, trame.value, ft_strlen(trame.value));
+		print_succes(CWD_OK);
+//		return (0);
 	}
 	else if (ft_memcmp(trame.type, T_MSG, CMD_SIZE) == 0)
 	{
@@ -116,21 +108,21 @@ int					parse_msg(t_trame trame, int sock)
 	return (0);
 }
 
-void					prompt(int sock)
+void					prompt(int sock, t_info	info)
 {
 	char 				*u_input;
 	char 				*cmd;
 
-	ft_putstr("ft_p:>");
+	ft_putchar('(');
+	ft_putstr(info.path);
+	ft_putstr(")ft_p:>");
 	get_next_line(0, &u_input);
 	if (ft_strlen(u_input) > 0)
 	{
 		if (parse_command(u_input, sock) == 0)
 			return ;
 	}
-	prompt(sock);
-
-
+	prompt(sock, info);
 }
 
 void					main_process(int m_sock, uint32_t cslen, struct sockaddr_in csin)
@@ -138,25 +130,23 @@ void					main_process(int m_sock, uint32_t cslen, struct sockaddr_in csin)
 
 	t_trame				trame;
 	int 				r;
+	t_info				info;
 
 	ft_bzero(&trame, sizeof(t_trame));
-
+	ft_bzero(&info, sizeof(t_info));
+	info.path[0] = '/';
 	while (1)
 	{
 		if ((trame = listen_sock(m_sock)).error == 1)
 			break;
-		printf("DEBUG : %s\n", trame.type);
-		if (parse_msg(trame, m_sock) == 0)
+//		printf("DEBUG : %s\n", trame.type);
+		if (parse_msg(trame, m_sock, &info) == 0)
 		{
-			prompt(m_sock);
+			prompt(m_sock, info);
 		}
-		printf("DEBUG : CORRECT TRANSMISSION\n");
-
+//		printf("DEBUG : CORRECT TRANSMISSION\n");
 	}
 	close(m_sock);
-
-
-
 }
 
 int 					main(int ac, char **av)

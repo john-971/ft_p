@@ -9,5 +9,7 @@ conception d'un serveur et d'un client ftp
 --> login
     Encoder le mdp
 
+--> Ls
+    tester la gestion d'erreur
 
 -REMETTRE LA COMPILATION DE LA LIBFT DANS LE MAKEFILE !!!!!!!!!!!!!

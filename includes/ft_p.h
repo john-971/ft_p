@@ -13,6 +13,7 @@
 #include <dirent.h>
 #include <limits.h>
 #include <fcntl.h>
+#include <errno.h>
 
 
 #define TRANS_SIZE 1023
@@ -42,6 +43,13 @@ typedef struct 	s_trame
 	int			error;
 }				t_trame;
 
+typedef struct 	s_info
+{
+	char		base_path[PATH_MAX];
+	int			b_path_lvl;
+	char		path[PATH_MAX];
+}				t_info;
+
 
 #define CMD_SIZE 5
 
@@ -54,6 +62,11 @@ typedef struct 	s_trame
 #define ERROR_EXEC "Une erreur est survenu dans l'execution de la commande"
 #define COMMAND_NOT_FOUND "Commande inconnue (ls/cd/pwd/get/put)"
 
+#define ERR_NOTDIR "Un élément du chemin d'accès n'est pas un répertoire"
+#define ERR_ACL "Impossible de lire ou de parcourir un composant du chemin"
+#define ERR_ENOENT "Le répertoire en cours a été supprimé."
+#define CWD_OK "Changement du repertoire de travail !"
+#define ERROR_DEFAULT "Une erreur est surevenu"
 
 #include "../libft/includes/libft.h"
 
@@ -62,19 +75,16 @@ typedef struct 	s_trame
  **====================== SERVER SIDE
 **/
 
-/**
- ** send_receive.c
-**/
-void					send_message(uint8_t type_message, char *value, int sock);
-void					send_command(char *type, char *value, int sock);
-t_trame					listen_sock(int sock);
 
 /**
  ** server_command.c
 **/
-int						manage_command(int cs, t_trame trame);
+int						manage_command(int cs, t_trame trame, t_info *info);
 
-
+/**
+ ** change_dir.c
+**/
+void					cd_command(int sock, t_trame trame, t_info *info);
 
 /**
  **====================== CLIENT SIDE
@@ -91,6 +101,27 @@ void					print_succes(char *msg);
  ** cli_command.c
 **/
 int						parse_command(char *input, int sock);
+void					init_path(t_info *info, int sock);
 
+/**
+ ** ===================== COMMON
+**/
 
+/**
+ ** send_receive.c
+**/
+void					send_message(uint8_t type_message, char *value, int sock);
+void					send_command(char *type, char *value, int sock);
+t_trame					listen_sock(int sock);
+
+/**
+ ** create_socket.c
+**/
+int 					create_server(int port);
+int 					create_client(char *addr, int port);
+
+/**
+ ** manage_errno.c
+**/
+char					*get_error();
 #endif

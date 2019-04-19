@@ -23,13 +23,17 @@ CFLAGS =   $(INCLUDES)
 LIBS = -L libft/ -lft -lm
 
 SRC_SERVER = ./serveur/main.c \
+			./serveur/server_command.c \
+			./serveur/change_dir.c \
 			./common/send_receive.c \
-			./serveur/server_command.c
+			./common/create_socket.c \
+			./common/manage_errno.c
 
 SRC_CLIENT = ./cli/main.c \
-			./common/send_receive.c \
 			./cli/cli_command.c \
-			./cli/output.c
+			./cli/output.c \
+			./common/send_receive.c \
+			./common/create_socket.c
 
 
 OBJ_SERVER = $(SRC_SERVER:.c=.o)

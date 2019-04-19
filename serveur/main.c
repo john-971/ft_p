@@ -7,32 +7,6 @@ void 					usage(char *str)
 	exit(EXIT_FAILURE);
 }
 
-int 					create_server(int port)
-{
-	int 				sock;
-	struct protoent		*proto;
-	struct sockaddr_in	sin;
-
-	proto = getprotobyname("tcp");
-	if (proto == 0)
-		return -1;
-	if ((sock = socket(PF_INET, SOCK_STREAM, proto->p_proto)) == -1)
-	{
-		printf("ERROR\n");
-		return -1;
-	}
-	sin.sin_family = AF_INET;
-	sin.sin_port = htons(port);
-	sin.sin_addr.s_addr = htonl(INADDR_ANY);	// on accepte n'importe quelle adresse
-	if (bind(sock, (const struct sockaddr*)&sin, sizeof(sin)) == -1)
-	{
-		printf("Bind error");
-		exit(2);
-	}
-	listen(sock, 2);	// limite le nombre de connexions simultanée
-	return(sock);
-}
-
 int						manage_login(int sock)
 {
 	t_trame				trame;
@@ -69,6 +43,7 @@ void					main_process(int m_sock, uint32_t cslen, struct sockaddr_in csin)
 	t_trame				trame;
 	int					r;
 	int 				pid;
+	t_info				info;
 
 	while ((cs = accept(m_sock, (struct sockaddr*)&csin, &cslen)) != -1)
 	{
@@ -78,16 +53,21 @@ void					main_process(int m_sock, uint32_t cslen, struct sockaddr_in csin)
 		printf("PID %i\n", pid);
 		if (pid == 0)
 		{
+			printf("Client connected %i\n", cs);
 			if (manage_login(cs) == 0)
 			{
-				printf("Client connected %i\n", cs);
+				init_path(&info, cs);
+//				printf("START PATH ! : %s : lvls %i\n", info.base_path, info.b_path_lvl);
+				printf("Client %i, logged\n", cs);
 				while (1)
 				{
+//					printf("DEBUG : ACTUAL PATH %s", info.path);
 					if ((trame = listen_sock(cs)).error == 1)
 						break ;
 
-					if (manage_command(cs, trame) == -1)
+					if (manage_command(cs, trame, &info) == -1)
 						break ;
+//					printf("DEBUG END COMMAND \n");
 				}
 			}
 			printf("Close connection for %i\n", cs);

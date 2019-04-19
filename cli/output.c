@@ -4,12 +4,12 @@ void					print_error(char *msg)
 {
 	printf("\033[0;31m");
 	printf("/!\\ %s /!\\ \n", msg);
-	printf("\033[0m");
+	printf("\033[0m\n");
 }
 
 void					print_succes(char *msg)
 {
 	printf("\033[0;32m");
 	printf("%s \n", msg);
-	printf("\033[0m");
+	printf("\033[0m\n");
 }

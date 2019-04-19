@@ -1,31 +1,5 @@
 #include "../includes/ft_p.h"
 
-
-
-int				find_char_at(char *str, int tofind)
-{
-	int			i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == tofind)
-			return i;
-		i++;
-	}
-	return ft_strlen(str);
-}
-
-int					create_file()
-{
-	int 			fd;
-
-	fd = open("/tmp/ls", O_CREAT | O_WRONLY | O_TRUNC, 0666);
-	if (fd == -1)
-		printf("ERREUR DANS LA CREATION DU FICHIER TMP\n");
-	return fd;
-}
-
 void				ls_command(int sock)
 {
 	char 			cwd[PATH_MAX];
@@ -35,13 +9,15 @@ void				ls_command(int sock)
 
 	exit_status = -1;
 	test[0] = "ls";
-	test[1] = "-lR";
+	test[1] = "-l";
 	test[2] = NULL;
 	send_command(T_LS, "IS OK", sock);
 	if ((child = fork()) > 0)
 	{
 		if(wait4(child, &exit_status, 0, NULL) == -1)
-			send_command(T_LS, ERROR_EXEC, sock);
+			send_message(T_MSG_KO, ERROR_EXEC, sock);
+//		else
+//			send_message(T_MSG_OK, "IS OK", sock);
 	}
 	else if (child == 0)
 	{
@@ -59,7 +35,18 @@ void				ls_command(int sock)
 	}
 }
 
-int				manage_command(int cs, t_trame trame)
+void				pwd_command(int sock)
+{
+	char 			cwd[PATH_MAX];
+
+	if(getcwd(cwd, sizeof(cwd)) == NULL)
+		send_message(T_MSG_KO, get_error(), sock);
+	else
+		send_command(T_PWD, cwd, sock);
+//	printf("PWD PATH : %s\n", cwd);
+}
+
+int				manage_command(int cs, t_trame trame, t_info *info)
 {
 	char		*value;
 	char 		*cmd;
@@ -68,18 +55,19 @@ int				manage_command(int cs, t_trame trame)
 	{
 		printf("DEBUG : LS COMMAND\n");
 		ls_command(cs);
-
-
-//		value = ft_strsub(value, 0, ft_strlen(value) - CMD_SIZE);
-////		printf("DEBUG : VALUE : %s\n", value);
-//		cmd = ft_strsub(value, 0, find_char_at(value, ' '));
-//		if (ft_strequ(cmd, "ls") == 1)
-//		{
-//			printf("DEBUG : COMMAND LS\n");
-//
-//		}
-//
-//		free(value);
 	}
+	else if (ft_memcmp(trame.type, T_PWD, CMD_SIZE) == 0)
+	{
+		printf("DEBUG : PWD COMMAND\n");
+		pwd_command(cs);
+	}
+	else if (ft_memcmp(trame.type, T_CD, CMD_SIZE) == 0)
+	{
+		printf("DEBUG : CD COMMAND\n");
+		cd_command(cs, trame, info);
+//		printf("DEBUG : END CD \n");
+	}
+	else
+		send_message(T_MSG_KO, COMMAND_NOT_FOUND, cs);
 	return 0;
 }

@@ -20,7 +20,7 @@ void		send_command(char *type, char *value, int sock)
 {
 	int		size;
 	t_trame trame;
-	printf("DEBUUUUUUG : %s\n", type);
+//	printf("DEBUUUUUUG : %s\n", type);
 	ft_bzero(&trame, sizeof(t_trame));
 	ft_memcpy(trame.type, type, CMD_SIZE);
 	trame.type[5] = '\0';
@@ -42,7 +42,7 @@ t_trame					listen_sock(int sock)
 	buff[r] = "\0";
 //	printf("DEBUG : LISTEN SOCK TRAME\n");
 	trame = (t_trame *)buff;
-	printf("DEBUG : LISTEN SOCK TRAME %i\n", r);
+//	printf("DEBUG : LISTEN SOCK TRAME %i\n", r);
 	if (r <= 0)
 	{
 		printf("ERROR ON LISTEN SOCK\n");
