@@ -11,26 +11,29 @@ void				ls_command(int sock)
 	test[0] = "ls";
 	test[1] = "-l";
 	test[2] = NULL;
-	send_command(T_LS, "IS OK", sock);
 	if ((child = fork()) > 0)
 	{
-		if(wait4(child, &exit_status, 0, NULL) == -1)
+//		wait4(child, &exit_status, 0, NULL);
+//		printf("RETOUR WAIT FOR CHILD !!!!!! %i\n", exit_status == 256);
+		wait4(child, &exit_status, 0, NULL);
+		if(exit_status == RET_EXIT_FAIL)
 			send_message(T_MSG_KO, ERROR_EXEC, sock);
-//		else
-//			send_message(T_MSG_OK, "IS OK", sock);
+		else
+			send_message(T_MSG_OK, LS_GOOD, sock);
 	}
 	else if (child == 0)
 	{
+		send_command(T_LS, "IS OK", sock);
 		dup2(sock, STDOUT_FILENO);
 		dup2(sock, STDERR_FILENO);
 		if (execv("/bin/ls", test) != -1)
 		{
 			close(sock);
-			exit(1);
+			exit(0);
 		}
 		else{
 			close(sock);
-			exit(-1);
+			exit(EXIT_FAILURE);
 		}
 	}
 }
@@ -54,7 +57,6 @@ int				manage_command(int cs, t_trame trame, t_info *info)
 	{
 		printf("DEBUG : CD COMMAND\n");
 		cd_command(cs, trame, info);
-//		printf("DEBUG : END CD \n");
 	}
 	else
 		send_message(T_MSG_KO, COMMAND_NOT_FOUND, cs);

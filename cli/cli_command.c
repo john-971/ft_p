@@ -6,7 +6,6 @@ int		parse_command(char *input, int sock)
 
 //	printf("PARSE COMMANDS :\n");
 	commands = ft_strsplit(input, ' ');
-//	ft_read_tab(commands);
 	if (ft_strcmp(commands[0], "ls") == 0)
 		send_command(T_LS, input, sock);
 	else if (ft_strcmp(commands[0], "pwd") == 0)

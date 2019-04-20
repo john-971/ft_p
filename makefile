@@ -27,11 +27,12 @@ SRC_SERVER = ./serveur/main.c \
 			./serveur/change_dir.c \
 			./common/send_receive.c \
 			./common/create_socket.c \
+			./common/output.c \
 			./common/manage_errno.c
 
 SRC_CLIENT = ./cli/main.c \
 			./cli/cli_command.c \
-			./cli/output.c \
+			./common/output.c \
 			./common/send_receive.c \
 			./common/create_socket.c
 

@@ -32,7 +32,6 @@ void					manage_ls(int sock)
 	int					r;
 	t_trame				*trame;
 
-	print_succes(LS_GOOD);
 	while (1)
 	{
 		r = recv(sock, buff, TRANS_SIZE, 0);
@@ -46,29 +45,23 @@ void					manage_ls(int sock)
 		if (trame->type == T_MSG)
 		{
 			print_error(trame->value);
-			break;
+			return ;
 		}
 		else
 			printf("%s", buff);
 		if(r < TRANS_SIZE)
 			break;
 	}
-//POUR RENVOYER UN MESSAGE OK A LA FIN DE LS
-//	r = recv(sock, buff, TRANS_SIZE, 0);
-//	trame = (t_trame *)buff;
-//	printf("DEBUG TRAME %s\n", trame->value);
 }
 
-void				manage_pwd(t_trame trame)
+void				manage_pwd(t_trame trame, int sock)
 {
-	print_succes(PWD_GOOD);
 	printf("%s\n", trame.value);
 }
 
 int					parse_msg(t_trame trame, int sock, t_info *info)
 {
 	char				*value;
-
 
 //	printf("DEBUG PARSE MESSAGE :type : %s | value : %s\n", trame.type, trame.value);
 	if (ft_memcmp(trame.type, T_LOG, CMD_SIZE) == 0)
@@ -79,19 +72,18 @@ int					parse_msg(t_trame trame, int sock, t_info *info)
 	else if (ft_memcmp(trame.type, T_LS, CMD_SIZE) == 0)
 	{
 		manage_ls(sock);
-		return (0);
+		return (1);
 	}
 	else if (ft_memcmp(trame.type, T_PWD, CMD_SIZE) == 0)
 	{
-		manage_pwd(trame);
-		return (0);
+		manage_pwd(trame, sock);
+		return (1);
 	}
 	else if (ft_memcmp(trame.type, T_CD, CMD_SIZE) == 0)
 	{
 		ft_bzero(info->path, sizeof(info->path));
 		ft_memcpy(info->path, trame.value, ft_strlen(trame.value));
-		print_succes(CWD_OK);
-//		return (0);
+		return (1);
 	}
 	else if (ft_memcmp(trame.type, T_MSG, CMD_SIZE) == 0)
 	{

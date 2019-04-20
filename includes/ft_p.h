@@ -70,6 +70,8 @@ typedef struct 	s_info
 #define LS_GOOD "Récupération du contenu du répertoire"
 #define PWD_GOOD "Récupération du répertoire courant"
 
+#define RET_EXIT_FAIL 256
+
 #include "../libft/includes/libft.h"
 
 

@@ -77,6 +77,10 @@ void				format_path(t_info *info, int sock, char *type)
 		to_send = ft_strsub(info->path, i, ft_strlen(info->path) - i);
 		send_command(type, to_send, sock);
 	}
+	if(type == T_PWD)
+		send_message(T_MSG_OK, PWD_GOOD, sock);
+	else if(type == T_CD)
+		send_message(T_MSG_OK, CWD_OK, sock);
 }
 
 void				cd_command(int sock, t_trame trame, t_info *info)
@@ -98,6 +102,7 @@ void				cd_command(int sock, t_trame trame, t_info *info)
 		go_to = trame.value;
 	if (chdir(go_to) == 0)
 	{
+
 		if(getcwd(cwd, sizeof(cwd)) == NULL)
 		{
 			send_message(T_MSG_KO, get_error(), sock);
