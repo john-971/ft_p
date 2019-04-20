@@ -59,6 +59,26 @@ void				manage_pwd(t_trame trame, int sock)
 	printf("%s\n", trame.value);
 }
 
+int					manage_get(t_trame trame, int sock)
+{
+	off_t			total_size;
+	off_t			curr_size;
+	t_trame			file_trame;
+	int 			fd;
+
+	size = trame.value;
+	while (curr_size < total_size)
+	{
+		file_trame = listen_sock(sock);
+		if (file_trame.error == 0)
+		{
+			print_error(ERROR_FILE_RECPT);
+			return 0;
+		}
+
+	}
+}
+
 int					parse_msg(t_trame trame, int sock, t_info *info)
 {
 	char				*value;
@@ -84,6 +104,10 @@ int					parse_msg(t_trame trame, int sock, t_info *info)
 		ft_bzero(info->path, sizeof(info->path));
 		ft_memcpy(info->path, trame.value, ft_strlen(trame.value));
 		return (1);
+	}
+	else if (ft_memcmp(trame.type, T_GET, CMD_SIZE) == 0)
+	{
+		return manage_get(trame, sock);
 	}
 	else if (ft_memcmp(trame.type, T_MSG, CMD_SIZE) == 0)
 	{

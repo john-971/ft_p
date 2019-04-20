@@ -17,11 +17,20 @@ int		parse_command(char *input, int sock)
 		else
 			send_command(T_CD, "/", sock);
 	}
+	else if (ft_strcmp(commands[0], "get") == 0)
+	{
+		if (commands[1] && ft_strlen(commands[1]) > 0)
+			send_command(T_GET, commands[1], sock);
+		else
+		{
+			print_error(PARAM_MISSING);
+			return (1);
+		}
+	}
 	else
 	{
 		print_error(COMMAND_NOT_FOUND);
 		return (1);
 	}
-
-	return 0;
+	return (0);
 }

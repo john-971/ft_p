@@ -8,6 +8,8 @@ char	*get_error()
 		return (ERR_ACL);
 	if (errno == ENOENT)
 		return (ERR_ENOENT);
+	if (errno == ENAMETOOLONG)
+		return (ERR_NAMETOOLONG)
 	else
 		return (ERROR_DEFAULT);
 }

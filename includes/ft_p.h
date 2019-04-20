@@ -26,14 +26,16 @@
 
 #define T_LOG 	"<LOG>"
 #define	T_CMD 	"<CMD>"
-#define T_RET 	"<RET>"
-#define	T_END 	"<END>"
 
+#define	T_GET 	"<GET>"
+#define	T_PUT 	"<PUT>"
 #define T_LS  	"<LIS>"
 #define T_CD 	"<CWD>"
 #define T_PWD 	"<PWD>"
 
 //USHRT_MAX pour le transfert de fichiers !
+
+typedef unsigned short ushort
 
 typedef struct 	s_trame
 {
@@ -42,6 +44,14 @@ typedef struct 	s_trame
 	char 		value[1024];
 	int			error;
 }				t_trame;
+
+typedef struct 			s_file
+{
+	char				name[NAME_MAX]
+	off_t				part_size;
+	ushort				total_size;
+	char 				value[USHRT_MAX]
+}						t_file;
 
 typedef struct 	s_info
 {
@@ -56,7 +66,6 @@ typedef struct 	s_info
 #define V_LOGIN "Login"
 #define V_PASS "Password"
 #define BAD_LOG "Informations de connexions non reconnue"
-#define GOOD_LOG "Login ok !"
 #define PARAM_MISSING "Il manque un param pour la commande"
 #define ERROR_OPEN "Une erreur est survenu dans l'ouverture du dossier"
 #define ERROR_EXEC "Une erreur est survenu dans l'execution de la commande"
@@ -65,8 +74,13 @@ typedef struct 	s_info
 #define ERR_NOTDIR "Un élément du chemin d'accès n'est pas un répertoire"
 #define ERR_ACL "Impossible de lire ou de parcourir un composant du chemin"
 #define ERR_ENOENT "Le fichier n'existe pas."
-#define CWD_OK "Changement du répertoire de travail !"
 #define ERROR_DEFAULT "Une erreur est surevenu"
+#define ERROR_FILE_RECPT "Une erreur est surevenu dans la récupération du fichier"
+#define ERR_NAMETOOLONG "Le nom du fichier est trop long"
+
+
+#define GOOD_LOG "Login ok !"
+#define CWD_OK "Changement du répertoire de travail !"
 #define LS_GOOD "Récupération du contenu du répertoire"
 #define PWD_GOOD "Récupération du répertoire courant"
 

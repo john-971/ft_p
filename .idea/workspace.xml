@@ -11,19 +11,21 @@
   <component name="ChangeListManager">
     <list default="true" id="9e6b680d-3f10-4d14-b3f3-5d25290e1c38" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cli/cli_command.c" beforeDir="false" afterPath="$PROJECT_DIR$/cli/cli_command.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cli/cli_command.o" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cli/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/cli/main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cli/main.o" beforeDir="false" afterPath="$PROJECT_DIR$/cli/main.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cli/output.c" beforeDir="false" afterPath="$PROJECT_DIR$/common/output.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cli/output.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client" beforeDir="false" afterPath="$PROJECT_DIR$/client" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cli/main.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/create_socket.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/manage_errno.c" beforeDir="false" afterPath="$PROJECT_DIR$/common/manage_errno.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/output.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/send_receive.c" beforeDir="false" afterPath="$PROJECT_DIR$/common/send_receive.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/send_receive.o" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/includes/ft_p.h" beforeDir="false" afterPath="$PROJECT_DIR$/includes/ft_p.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/makefile" beforeDir="false" afterPath="$PROJECT_DIR$/makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server" beforeDir="false" afterPath="$PROJECT_DIR$/server" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serveur/change_dir.c" beforeDir="false" afterPath="$PROJECT_DIR$/serveur/change_dir.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serveur/change_dir.o" beforeDir="false" afterPath="$PROJECT_DIR$/serveur/change_dir.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/serveur/server_command.c" beforeDir="false" afterPath="$PROJECT_DIR$/serveur/server_command.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serveur/server_command.o" beforeDir="false" afterPath="$PROJECT_DIR$/serveur/server_command.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serveur/server_command.o" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/includes/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -43,7 +45,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/serveur/main.c">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="437">
+                <state relative-caret-position="465">
                   <caret line="31" column="5" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
                 </state>
               </provider>
@@ -52,8 +54,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/serveur/server_command.c">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="375">
-                  <caret line="25" column="42" selection-start-line="25" selection-start-column="42" selection-end-line="25" selection-end-column="42" />
+                <state relative-caret-position="957">
+                  <caret line="68" column="22" selection-start-line="68" selection-start-column="22" selection-end-line="68" selection-end-column="22" />
                 </state>
               </provider>
             </entry>
@@ -61,7 +63,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/serveur/change_dir.c">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1230">
+                <state relative-caret-position="708">
                   <caret line="82" column="37" selection-start-line="82" selection-start-column="31" selection-end-line="82" selection-end-column="37" />
                 </state>
               </provider>
@@ -70,8 +72,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/common/manage_errno.c">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="180">
-                  <caret line="12" column="1" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
+                <state relative-caret-position="165">
+                  <caret line="11" column="31" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="31" />
                 </state>
               </provider>
             </entry>
@@ -79,8 +81,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/common/send_receive.c">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="765">
-                  <caret line="51" column="1" selection-start-line="51" selection-start-column="1" selection-end-line="51" selection-end-column="1" />
+                <state relative-caret-position="540">
+                  <caret line="36" column="68" selection-start-line="36" selection-start-column="68" selection-end-line="36" selection-end-column="68" />
                 </state>
               </provider>
             </entry>
@@ -97,8 +99,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/README.md">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="195">
-                  <caret line="13" selection-start-line="13" selection-end-line="13" />
+                <state relative-caret-position="240">
+                  <caret line="16" column="59" selection-start-line="16" selection-start-column="59" selection-end-line="16" selection-end-column="59" />
                 </state>
               </provider>
             </entry>
@@ -112,8 +114,8 @@
               <file pinned="false" current-in-tab="false">
                 <entry file="file://$PROJECT_DIR$/cli/cli_command.c">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="105">
-                      <caret line="7" column="39" selection-start-line="7" selection-start-column="39" selection-end-line="7" selection-end-column="39" />
+                    <state relative-caret-position="405">
+                      <caret line="27" column="9" selection-start-line="27" selection-start-column="9" selection-end-line="27" selection-end-column="9" />
                     </state>
                   </provider>
                 </entry>
@@ -121,8 +123,8 @@
               <file pinned="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/cli/main.c">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="1035">
-                      <caret line="136" column="33" selection-start-line="136" selection-start-column="33" selection-end-line="136" selection-end-column="33" />
+                    <state relative-caret-position="612">
+                      <caret line="66" column="23" selection-start-line="66" selection-start-column="23" selection-end-line="66" selection-end-column="23" />
                     </state>
                   </provider>
                 </entry>
@@ -143,17 +145,8 @@
               <file pinned="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/includes/ft_p.h">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="1026">
-                      <caret line="120" column="46" selection-start-line="120" selection-start-column="46" selection-end-line="120" selection-end-column="46" />
-                    </state>
-                  </provider>
-                </entry>
-              </file>
-              <file pinned="false" current-in-tab="false">
-                <entry file="file://$PROJECT_DIR$/common/create_socket.c">
-                  <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="435">
-                      <caret line="29" selection-start-line="29" selection-end-line="29" selection-end-column="59" />
+                    <state relative-caret-position="418">
+                      <caret line="37" column="29" selection-start-line="37" selection-start-column="29" selection-end-line="37" selection-end-column="29" />
                     </state>
                   </provider>
                 </entry>
@@ -195,8 +188,11 @@
       <find>format_path</find>
       <find>CWD_OK</find>
       <find>LS_GOOD</find>
-      <find>Récupération du contenu du répertoire</find>
       <find>wait_conf_msg</find>
+      <find>Récupération du contenu du répertoire</find>
+      <find>T_END</find>
+      <find>T_RET</find>
+      <find>open</find>
     </findStrings>
     <replaceStrings>
       <replace>send_command</replace>
@@ -222,18 +218,18 @@
         <option value="$PROJECT_DIR$/libft/makefile" />
         <option value="$PROJECT_DIR$/libft/srcs/ft_readtab.c" />
         <option value="$PROJECT_DIR$/cli/command.c" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/common/create_socket.c" />
         <option value="$PROJECT_DIR$/serveur/main.c" />
         <option value="$PROJECT_DIR$/cli/output.c" />
-        <option value="$PROJECT_DIR$/common/manage_errno.c" />
-        <option value="$PROJECT_DIR$/cli/cli_command.c" />
         <option value="$PROJECT_DIR$/Makefile" />
         <option value="$PROJECT_DIR$/serveur/change_dir.c" />
+        <option value="$PROJECT_DIR$/cli/cli_command.c" />
         <option value="$PROJECT_DIR$/serveur/server_command.c" />
-        <option value="$PROJECT_DIR$/common/send_receive.c" />
-        <option value="$PROJECT_DIR$/includes/ft_p.h" />
+        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/cli/main.c" />
+        <option value="$PROJECT_DIR$/common/manage_errno.c" />
+        <option value="$PROJECT_DIR$/includes/ft_p.h" />
+        <option value="$PROJECT_DIR$/common/send_receive.c" />
       </list>
     </option>
   </component>
@@ -254,6 +250,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -285,7 +282,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -345,18 +341,20 @@
       <workItem from="1555689326489" duration="3696000" />
       <workItem from="1555699790245" duration="3053000" />
       <workItem from="1555750113438" duration="780000" />
-      <workItem from="1555759221949" duration="4269000" />
+      <workItem from="1555759221949" duration="4792000" />
+      <workItem from="1555769877441" duration="2691000" />
+      <workItem from="1555784237126" duration="2156000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="91656000" />
+    <option name="totallyTimeSpent" value="97026000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="2560" height="1440" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.09094519" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.091739476" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -399,6 +397,9 @@
       <window_info anchor="right" id="make" order="3" />
       <window_info anchor="right" id="Database" order="4" />
     </layout-to-restore>
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.md" />
   </component>
   <component name="Vcs.Log.History.Properties">
     <option name="COLUMN_ORDER">
@@ -498,13 +499,6 @@
     <entry file="file://$PROJECT_DIR$/libft/srcs/ft_memcmp.c">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" selection-start-line="13" selection-end-line="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/libft/srcs/ft_memcpy.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
@@ -529,10 +523,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/serveur/main.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="31" column="5" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/cli/cli_command.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="39" selection-start-line="7" selection-start-column="39" selection-end-line="7" selection-end-column="39" />
+        <state relative-caret-position="405">
+          <caret line="27" column="9" selection-start-line="27" selection-start-column="9" selection-end-line="27" selection-end-column="9" />
         </state>
       </provider>
     </entry>
@@ -543,13 +544,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/serveur/main.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="31" column="5" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Makefile">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="435">
@@ -557,45 +551,52 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/common/manage_errno.c">
+    <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="1" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
+        <state relative-caret-position="240">
+          <caret line="16" column="59" selection-start-line="16" selection-start-column="59" selection-end-line="16" selection-end-column="59" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/serveur/change_dir.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1230">
+        <state relative-caret-position="708">
           <caret line="82" column="37" selection-start-line="82" selection-start-column="31" selection-end-line="82" selection-end-column="37" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/serveur/server_command.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="25" column="42" selection-start-line="25" selection-start-column="42" selection-end-line="25" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/send_receive.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="51" column="1" selection-start-line="51" selection-start-column="1" selection-end-line="51" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/includes/ft_p.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1026">
-          <caret line="120" column="46" selection-start-line="120" selection-start-column="46" selection-end-line="120" selection-end-column="46" />
+        <state relative-caret-position="957">
+          <caret line="68" column="22" selection-start-line="68" selection-start-column="22" selection-end-line="68" selection-end-column="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cli/main.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1035">
-          <caret line="136" column="33" selection-start-line="136" selection-start-column="33" selection-end-line="136" selection-end-column="33" />
+        <state relative-caret-position="612">
+          <caret line="66" column="23" selection-start-line="66" selection-start-column="23" selection-end-line="66" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/manage_errno.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="31" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/includes/ft_p.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="37" column="29" selection-start-line="37" selection-start-column="29" selection-end-line="37" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/send_receive.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="36" column="68" selection-start-line="36" selection-start-column="68" selection-end-line="36" selection-end-column="68" />
         </state>
       </provider>
     </entry>
