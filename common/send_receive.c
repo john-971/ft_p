@@ -24,7 +24,7 @@ void		send_command(char *type, char *value, int sock, off_t size)
 	ft_memcpy(trame.type, type, CMD_SIZE);
 	trame.type[5] = '\0';
 	ft_memcpy(trame.value, value, ft_strlen(value));
-	trame.value[TRANS_SIZE] = '\0';
+//	trame.value[TRANS_SIZE] = '\0';
 
 	trame.size = size;
 

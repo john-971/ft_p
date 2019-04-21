@@ -96,7 +96,9 @@ void			get_command(int sock, t_trame trame, t_info *info)
 			{
 				buff[r] = '\0';
 				printf("DEBUG : read size => %i \n %s\n", r, buff);
-				send_command(T_GET, buff, sock, r);
+//				send_command(T_GET, buff, sock, r);
+				send(sock, buff, r, 0);
+				ft_bzero(buff, 2048);
 
 					trame = listen_sock(sock);
 					if (trame.error == -1)

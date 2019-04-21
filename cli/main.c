@@ -62,15 +62,11 @@ void				manage_pwd(t_trame trame, int sock)
 int					check_package(int sock, off_t *curr_size, int fd)
 {
 	t_trame			file_trame;
+	char 			buff[TRANS_SIZE + 1];
+	int 			r;
 
-	file_trame = listen_sock(sock);
-	if (file_trame.error == 1)
-	{
-		print_error(ERROR_FILE_RECPT);
-		send_command(T_GET, ABORT, sock, 0);
-		return -1;
-	}
-	*curr_size += write(fd, file_trame.value, file_trame.size);
+	r = recv(sock, buff, TRANS_SIZE, 0);
+	*curr_size += write(fd, buff, r);
 	if (*curr_size == -1)
 	{
 		print_error(get_error());
@@ -83,20 +79,17 @@ int					check_package(int sock, off_t *curr_size, int fd)
 
 int					manage_get(t_trame trame, int sock)
 {
-	off_t			total_size;
 	off_t			curr_size;
-	t_trame			file_trame;
 	int 			fd;
 
-	total_size = trame.size;
 	curr_size = 0;
 //	printf("DEBUG : MANAGE GET => NAME : %s | SIZE : %llu\n", trame.value, trame.size);
 	if ((fd = open(trame.value, O_CREAT | O_RDWR | O_TRUNC, 0777)) != -1)
 	{
 		send_command(T_GET, OK, sock, 0);
-		while ((long)curr_size < (long)total_size)
+		while ((long)curr_size < (long)trame.size)
 		{
-			printf("DEBUG : \nCURRENT SIZE : %llu\nMAX_SIZE : %llu \n", curr_size, total_size);
+//			printf("DEBUG : \nCURRENT SIZE : %llu\nMAX_SIZE : %llu \n", curr_size, total_size);
 			if(check_package(sock, &curr_size, fd) == -1)
 				return 0;
 		}

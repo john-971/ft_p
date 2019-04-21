@@ -17,7 +17,7 @@
 #include <sys/stat.h>
 
 
-#define TRANS_SIZE 1023
+#define TRANS_SIZE 2047
 #define RET_KO 0
 #define RET_OK 1
 
@@ -40,7 +40,7 @@ typedef struct 	s_trame
 {
 	char		type[6];
 	uint8_t 	type_msg;
-	char 		value[1024];
+	char 		value[2048];
 	off_t		size;
 	int			read;
 	int			error;
