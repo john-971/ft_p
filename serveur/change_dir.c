@@ -71,11 +71,11 @@ void				format_path(t_info *info, int sock, char *type)
 			break;
 	}
 	if (!info->path[i] && !info->base_path[i])
-		send_command(type, "/", sock);
+		send_command(type, "/", sock, 0);
 	else
 	{
 		to_send = ft_strsub(info->path, i, ft_strlen(info->path) - i);
-		send_command(type, to_send, sock);
+		send_command(type, to_send, sock, 0);
 	}
 	if(type == T_PWD)
 		send_message(T_MSG_OK, PWD_GOOD, sock);

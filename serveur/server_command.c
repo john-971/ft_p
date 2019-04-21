@@ -23,7 +23,7 @@ void				ls_command(int sock)
 	}
 	else if (child == 0)
 	{
-		send_command(T_LS, "IS OK", sock);
+		send_command(T_LS, "IS OK", sock, 0);
 		dup2(sock, STDOUT_FILENO);
 		dup2(sock, STDERR_FILENO);
 		if (execv("/bin/ls", test) != -1)
@@ -42,42 +42,77 @@ void				ls_command(int sock)
 off_t			get_file_size(int fd, int sock)
 {
 	off_t		size;
-	struct stat *buff;
+	struct stat buff;
 
-	if (fstat(fd, buff) == 0)
+
+	if (fstat(fd, &buff) == 0)
 	{
-		if (buff && buff->st_size)
-			return buff->st_size
+		printf("DEBUG : GET FILE SIZE => %llu\n", buff.st_size);
+//		if (buff.st_size)
+			return (buff.st_size);
 	}
 	send_message(T_MSG_KO, get_error(), sock);
-	return -1;
+	return (-1);
+}
+
+char			*get_name_from_path(char *path)
+{
+	char 		*name;
+	int 		i;
+	int 		nb_lvl;
+
+	name = path;
+	while((path = ft_memchr(path, '/', ft_strlen(path))) != NULL)
+	{
+		path++;
+		name = path;
+//		printf("DEBUG : get_name_from_path => NAME : %s \n", name);
+	}
+	printf("DEBUG : get_name_from_path => NAME : %s\n", name);
+	return name;
 }
 
 void			get_command(int sock, t_trame trame, t_info *info)
 {
 	int 		fd;
-	char 		*buff;
+	char 		buff[TRANS_SIZE + 1];
 	int 		r;
 	off_t		size;
 
-	if (trame.value && ft_strlen(trame.value) > 0)
+	printf("DEBUG : get_command => PATH : %s | SIZE : %llu\n", trame.value, trame.size);
+
+	if ((fd = open(trame.value, O_RDWR)) != -1)
 	{
-		if ((fd = open(trame.value, O_RDONLY)) != -1)
+		if ((size = get_file_size(fd, sock)) == -1)
+			return ;
+		send_command(T_GET, get_name_from_path(trame.value), sock, size);
+		trame = listen_sock(sock);
+		if (trame.error == -1)
+			exit(EXIT_FAILURE);
+		if (ft_strcmp(trame.value, OK) == 0)
 		{
-			if ((size = get_file_size(fd, sock)) == -1)
-				return ;
-			send_command(T_GET, size, sock);
+			printf("DEBUG : GET COMMAND CLIENT SAID OK\n");
 			while ((r = read(fd, buff, TRANS_SIZE)) > 0)
 			{
-				printf("DEBUG : read size => %i", r);
+				buff[r] = '\0';
+				printf("DEBUG : read size => %i \n %s\n", r, buff);
+				send_command(T_GET, buff, sock, r);
+
+					trame = listen_sock(sock);
+					if (trame.error == -1)
+						exit(EXIT_FAILURE);
+					if (trame.value == ABORT)
+						return ;
 			}
+			send_message(T_MSG_OK, GET_OK, sock);
+//			print_error(get_error());
 		}
-		else
-			send_message(T_MSG_KO, get_error(), sock);
+		else{
+			printf("DEBUG : GET COMMAND CLIENT ABORT\n");
+		}
 	}
 	else
-		send_message(T_MSG_KO, PARAM_MISSING, sock);
-
+		send_message(T_MSG_KO, get_error(), sock);
 }
 
 

@@ -34,7 +34,8 @@ SRC_CLIENT = ./cli/main.c \
 			./cli/cli_command.c \
 			./common/output.c \
 			./common/send_receive.c \
-			./common/create_socket.c
+			./common/create_socket.c \
+			./common/manage_errno.c
 
 
 OBJ_SERVER = $(SRC_SERVER:.c=.o)

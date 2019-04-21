@@ -21,7 +21,7 @@ void					manage_login(int sock, char *msg_value)
 		ft_putstr("Password :");
 	get_next_line(0, &u_input);
 	if (ft_strlen(u_input) > 0)
-		send_command(T_LOG, u_input, sock);
+		send_command(T_LOG, u_input, sock, 0);
 	else
 		manage_login(sock, msg_value);
 }
@@ -59,6 +59,28 @@ void				manage_pwd(t_trame trame, int sock)
 	printf("%s\n", trame.value);
 }
 
+int					check_package(int sock, off_t *curr_size, int fd)
+{
+	t_trame			file_trame;
+
+	file_trame = listen_sock(sock);
+	if (file_trame.error == 1)
+	{
+		print_error(ERROR_FILE_RECPT);
+		send_command(T_GET, ABORT, sock, 0);
+		return -1;
+	}
+	*curr_size += write(fd, file_trame.value, file_trame.size);
+	if (*curr_size == -1)
+	{
+		print_error(get_error());
+		send_command(T_GET, ABORT, sock, 0);
+		return -1;
+	}
+	send_command(T_GET, OK, sock, 0);
+	return 0;
+};
+
 int					manage_get(t_trame trame, int sock)
 {
 	off_t			total_size;
@@ -66,16 +88,26 @@ int					manage_get(t_trame trame, int sock)
 	t_trame			file_trame;
 	int 			fd;
 
-	size = trame.value;
-	while (curr_size < total_size)
+	total_size = trame.size;
+	curr_size = 0;
+//	printf("DEBUG : MANAGE GET => NAME : %s | SIZE : %llu\n", trame.value, trame.size);
+	if ((fd = open(trame.value, O_CREAT | O_RDWR | O_TRUNC, 0777)) != -1)
 	{
-		file_trame = listen_sock(sock);
-		if (file_trame.error == 0)
+		send_command(T_GET, OK, sock, 0);
+		while ((long)curr_size < (long)total_size)
 		{
-			print_error(ERROR_FILE_RECPT);
-			return 0;
+			printf("DEBUG : \nCURRENT SIZE : %llu\nMAX_SIZE : %llu \n", curr_size, total_size);
+			if(check_package(sock, &curr_size, fd) == -1)
+				return 0;
 		}
-
+		close(fd);
+		return (1);
+	}
+	else
+	{
+		send_command(T_GET, ABORT, sock, 0);
+		print_error(strerror(errno));
+		return 0;
 	}
 }
 

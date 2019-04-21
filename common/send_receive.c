@@ -16,38 +16,20 @@ void		send_message(uint8_t type_message, char *value, int sock)
 	send(sock, &trame, sizeof(trame), 0);
 }
 
-void		send_command(char *type, char *value, int sock)
+void		send_command(char *type, char *value, int sock, off_t size)
 {
-	int		size;
 	t_trame trame;
-//	printf("DEBUUUUUUG : %s\n", type);
+//	printf("DEBUG SEND COMMAND => VALUE : %s\n", value);
 	ft_bzero(&trame, sizeof(t_trame));
 	ft_memcpy(trame.type, type, CMD_SIZE);
 	trame.type[5] = '\0';
 	ft_memcpy(trame.value, value, ft_strlen(value));
 	trame.value[TRANS_SIZE] = '\0';
 
-	send(sock, &trame, sizeof(trame), 0);
-}
-
-void		send_file(char *name, ushort p_size, off_t size, char *value)
-{
-
-	//CODER LE SENDFILE !!!! (POUR ENVOYER LES MORCEAUX DE FICHIERS)
-	//CODER UNE FONCTION QUI RECUPERE LE NOM DU FICHIER DANS UN PATH
-
-	int		size;
-	t_trame trame;
-//	printf("DEBUUUUUUG : %s\n", type);
-	ft_bzero(&trame, sizeof(t_trame));
-	ft_memcpy(trame.type, type, CMD_SIZE);
-	trame.type[5] = '\0';
-	ft_memcpy(trame.value, value, ft_strlen(value));
-	trame.value[TRANS_SIZE] = '\0';
+	trame.size = size;
 
 	send(sock, &trame, sizeof(trame), 0);
 }
-
 
 t_trame					listen_sock(int sock)
 {
@@ -66,6 +48,7 @@ t_trame					listen_sock(int sock)
 		printf("ERROR ON LISTEN SOCK\n");
 		trame->error = 1;
 	}
+	trame->read = r;
 	return *trame;
 }
 

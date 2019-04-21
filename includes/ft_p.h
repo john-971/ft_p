@@ -14,6 +14,7 @@
 #include <limits.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <sys/stat.h>
 
 
 #define TRANS_SIZE 1023
@@ -35,23 +36,15 @@
 
 //USHRT_MAX pour le transfert de fichiers !
 
-typedef unsigned short ushort
-
 typedef struct 	s_trame
 {
 	char		type[6];
 	uint8_t 	type_msg;
 	char 		value[1024];
+	off_t		size;
+	int			read;
 	int			error;
 }				t_trame;
-
-typedef struct 			s_file
-{
-	char				name[NAME_MAX]
-	off_t				part_size;
-	ushort				total_size;
-	char 				value[USHRT_MAX]
-}						t_file;
 
 typedef struct 	s_info
 {
@@ -78,11 +71,16 @@ typedef struct 	s_info
 #define ERROR_FILE_RECPT "Une erreur est surevenu dans la récupération du fichier"
 #define ERR_NAMETOOLONG "Le nom du fichier est trop long"
 
+#define ABORT "-1"
+#define OK "0"
+#define RETRY "1"
+#define MAX_RETRY 10
 
 #define GOOD_LOG "Login ok !"
 #define CWD_OK "Changement du répertoire de travail !"
 #define LS_GOOD "Récupération du contenu du répertoire"
 #define PWD_GOOD "Récupération du répertoire courant"
+#define GET_OK "Téléchargement du fichier terminer"
 
 #define RET_EXIT_FAIL 256
 
@@ -131,7 +129,7 @@ void					init_path(t_info *info, int sock);
  ** send_receive.c
 **/
 void					send_message(uint8_t type_message, char *value, int sock);
-void					send_command(char *type, char *value, int sock);
+void					send_command(char *type, char *value, int sock, off_t size);
 t_trame					listen_sock(int sock);
 
 /**

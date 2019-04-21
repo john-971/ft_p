@@ -13,11 +13,11 @@ int						manage_login(int sock)
 	char 				*login;
 	char 				*password;
 
-	send_command(T_LOG, V_LOGIN, sock);
+	send_command(T_LOG, V_LOGIN, sock, 0);
 	if ((trame = listen_sock(sock)).error == 1)
 		return -1;
 	login = ft_strdup(trame.value);
-	send_command(T_LOG, V_PASS, sock);
+	send_command(T_LOG, V_PASS, sock, 0);
 	if ((trame = listen_sock(sock)).error == 1)
 		return -1;
 	password = ft_strdup(trame.value);

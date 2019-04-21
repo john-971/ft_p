@@ -9,7 +9,7 @@ char	*get_error()
 	if (errno == ENOENT)
 		return (ERR_ENOENT);
 	if (errno == ENAMETOOLONG)
-		return (ERR_NAMETOOLONG)
+		return (ERR_NAMETOOLONG);
 	else
-		return (ERROR_DEFAULT);
+		return (strerror(errno));
 }
