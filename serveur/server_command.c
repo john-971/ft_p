@@ -38,23 +38,6 @@ void				ls_command(int sock)
 	}
 }
 
-
-off_t			get_file_size(int fd, int sock)
-{
-	off_t		size;
-	struct stat buff;
-
-
-	if (fstat(fd, &buff) == 0)
-	{
-		printf("DEBUG : GET FILE SIZE => %llu\n", buff.st_size);
-//		if (buff.st_size)
-			return (buff.st_size);
-	}
-	send_message(T_MSG_KO, get_error(), sock);
-	return (-1);
-}
-
 char			*get_name_from_path(char *path)
 {
 	char 		*name;
@@ -75,11 +58,9 @@ char			*get_name_from_path(char *path)
 void			get_command(int sock, t_trame trame, t_info *info)
 {
 	int 		fd;
-	char 		buff[TRANS_SIZE + 1];
-	int 		r;
 	off_t		size;
 
-	printf("DEBUG : get_command => PATH : %s | SIZE : %llu\n", trame.value, trame.size);
+//	printf("DEBUG : get_command => PATH : %s | SIZE : %llu\n", trame.value, trame.size);
 
 	if ((fd = open(trame.value, O_RDWR)) != -1)
 	{
@@ -88,33 +69,25 @@ void			get_command(int sock, t_trame trame, t_info *info)
 		send_command(T_GET, get_name_from_path(trame.value), sock, size);
 		trame = listen_sock(sock);
 		if (trame.error == -1)
+		{
+			close(fd);
 			exit(EXIT_FAILURE);
+		}
+
 		if (ft_strcmp(trame.value, OK) == 0)
 		{
-			printf("DEBUG : GET COMMAND CLIENT SAID OK\n");
-			while ((r = read(fd, buff, TRANS_SIZE)) > 0)
-			{
-				buff[r] = '\0';
-				printf("DEBUG : read size => %i \n %s\n", r, buff);
-//				send_command(T_GET, buff, sock, r);
-				send(sock, buff, r, 0);
-				ft_bzero(buff, 2048);
-
-					trame = listen_sock(sock);
-					if (trame.error == -1)
-						exit(EXIT_FAILURE);
-					if (trame.value == ABORT)
-						return ;
-			}
-			send_message(T_MSG_OK, GET_OK, sock);
-//			print_error(get_error());
+			send_file(fd, sock);
 		}
 		else{
 			printf("DEBUG : GET COMMAND CLIENT ABORT\n");
 		}
+		close(fd);
 	}
 	else
+	{
+		printf("OPEN FAIL \n");
 		send_message(T_MSG_KO, get_error(), sock);
+	}
 }
 
 

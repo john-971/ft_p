@@ -59,49 +59,29 @@ void				manage_pwd(t_trame trame, int sock)
 	printf("%s\n", trame.value);
 }
 
-int					check_package(int sock, off_t *curr_size, int fd)
-{
-	t_trame			file_trame;
-	char 			buff[TRANS_SIZE + 1];
-	int 			r;
-
-	r = recv(sock, buff, TRANS_SIZE, 0);
-	*curr_size += write(fd, buff, r);
-	if (*curr_size == -1)
-	{
-		print_error(get_error());
-		send_command(T_GET, ABORT, sock, 0);
-		return -1;
-	}
-	send_command(T_GET, OK, sock, 0);
-	return 0;
-};
-
 int					manage_get(t_trame trame, int sock)
 {
-	off_t			curr_size;
+
 	int 			fd;
+	int 			ret;
 
 	curr_size = 0;
 //	printf("DEBUG : MANAGE GET => NAME : %s | SIZE : %llu\n", trame.value, trame.size);
 	if ((fd = open(trame.value, O_CREAT | O_RDWR | O_TRUNC, 0777)) != -1)
 	{
 		send_command(T_GET, OK, sock, 0);
-		while ((long)curr_size < (long)trame.size)
-		{
-//			printf("DEBUG : \nCURRENT SIZE : %llu\nMAX_SIZE : %llu \n", curr_size, total_size);
-			if(check_package(sock, &curr_size, fd) == -1)
-				return 0;
-		}
+		if(recev_file(sock, curr_size, fd, trame.size) == -1)
+			ret = 0;
+		ret = 1;
 		close(fd);
-		return (1);
 	}
 	else
 	{
 		send_command(T_GET, ABORT, sock, 0);
 		print_error(strerror(errno));
-		return 0;
+		ret = 0;
 	}
+	return (ret);
 }
 
 int					parse_msg(t_trame trame, int sock, t_info *info)

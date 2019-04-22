@@ -18,6 +18,7 @@
 
 
 #define TRANS_SIZE 2047
+#define FILE_SIZE 2047
 #define RET_KO 0
 #define RET_OK 1
 
@@ -109,13 +110,6 @@ void					format_path(t_info *info, int sock, char *type);
 
 
 /**
- ** output.c
-**/
-void					print_error(char *msg);
-void					print_succes(char *msg);
-void					print_prompt(char *path);
-
-/**
  ** cli_command.c
 **/
 int						parse_command(char *input, int sock);
@@ -124,6 +118,14 @@ void					init_path(t_info *info, int sock);
 /**
  ** ===================== COMMON
 **/
+
+/**
+ ** output.c
+**/
+void					print_error(char *msg);
+void					print_succes(char *msg);
+void					print_prompt(char *path);
+void					print_status_bar(off_t c_size, off_t f_size);
 
 /**
  ** send_receive.c
@@ -142,4 +144,11 @@ int 					create_client(char *addr, int port);
  ** manage_errno.c
 **/
 char					*get_error();
+
+/**
+ ** file_management.c
+**/
+void					send_file(int fd, int sock);
+off_t					get_file_size(int fd, int sock);
+int						recev_file(int sock, off_t c_size, int fd, off_t f_size);
 #endif

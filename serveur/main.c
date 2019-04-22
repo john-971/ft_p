@@ -53,24 +53,22 @@ void					main_process(int m_sock, uint32_t cslen, struct sockaddr_in csin)
 		printf("PID %i\n", pid);
 		if (pid == 0)
 		{
-			printf("Client connected %i\n", cs);
+			printf("\033[0;33mClient connected [%i] \033[0m\n", cs);
 			if (manage_login(cs) == 0)
 			{
 				init_path(&info, cs);
 //				printf("START PATH ! : %s : lvls %i\n", info.base_path, info.b_path_lvl);
-				printf("Client %i, logged\n", cs);
+				printf("\033[0;33mClient [%i], logged \033[0m\n", cs);
 				while (1)
 				{
 //					printf("DEBUG : ACTUAL PATH %s", info.path);
 					if ((trame = listen_sock(cs)).error == 1)
-						break ;
-
+						break;
 					if (manage_command(cs, trame, &info) == -1)
-						break ;
-//					printf("DEBUG END COMMAND \n");
+						break;
 				}
 			}
-			printf("Close connection for %i\n", cs);
+			printf("\033[0;33mClose connection for [%i]\033[0m\n", cs);
 			close (cs);
 		}
 	}
