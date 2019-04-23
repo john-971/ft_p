@@ -22,7 +22,6 @@ int			send_file(int fd, int sock, off_t f_size, char *type)
 	off_t		curr_size;
 
 	curr_size = 0;
-	print_succes("in send file");
 	while ((r = read(fd, buff, FILE_SIZE)) > 0)
 	{
 //		print_succes("in send file");
@@ -45,7 +44,6 @@ int			send_file(int fd, int sock, off_t f_size, char *type)
 		if (type == T_PUT)
 			print_status_bar(curr_size, f_size);
 	}
-	print_succes("END OF SEND_FILE");
 	ft_putchar('\n');
 	return (RET_OK);
 	send_message(T_MSG_OK, GET_OK, sock);
@@ -58,7 +56,6 @@ int				recev_file(int sock, int fd, off_t f_size, char *type)
 	off_t		curr_size;
 
 	curr_size = 0;
-	print_succes("in recv file");
 	while ((long)curr_size < (long)f_size)
 	{
 //		printf("IN RECEIV %lu\n", curr_size);
@@ -77,5 +74,6 @@ int				recev_file(int sock, int fd, off_t f_size, char *type)
 			print_status_bar(curr_size, f_size);
 	}
 	ft_putchar('\n');
+	printf("END RECEIV %lld : %lld\n", curr_size, f_size);
 	return 0;
 }

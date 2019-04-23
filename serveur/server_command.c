@@ -2,7 +2,6 @@
 
 void				ls_command(int sock)
 {
-	char 			cwd[PATH_MAX];
 	char 			*test[3];
 	int 			child;
 	int 			exit_status;
@@ -39,9 +38,7 @@ void				ls_command(int sock)
 
 int				manage_command(int cs, t_trame trame, t_info *info)
 {
-	char		*value;
-	char 		*cmd;
-
+	printf("DEBUG : get_command => PATH : %s | SIZE : %llu\n", trame.value, trame.size);
 	if (ft_memcmp(trame.type, T_LS, CMD_SIZE) == 0)
 	{
 		printf("DEBUG : LS COMMAND\n");
@@ -65,7 +62,7 @@ int				manage_command(int cs, t_trame trame, t_info *info)
 	else if (ft_memcmp(trame.type, T_PUT, CMD_SIZE) == 0)
 	{
 		printf("DEBUG : GET COMMAND\n");
-		return (put_command(cs, trame, info));
+		return (put_command(cs, trame));
 	}
 	else
 		send_message(T_MSG_KO, COMMAND_NOT_FOUND, cs);

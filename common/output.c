@@ -32,8 +32,9 @@ void			print_status_bar(off_t c_size, off_t f_size)
 	i = 0;
 	part = (100 * c_size) / f_size;
 	percent = ft_itoa(part);
+//	printf("PERCENT %s : TOTAL SIZE %llu\n", percent, f_size);
 	ft_putchar('\r');
-	ft_putstr("\033[0;45m");
+	ft_putstr("\033[0;44m");
 	ft_putstr(percent);
 	ft_putchar('%');
 	while (i < part)

@@ -42,6 +42,7 @@ void					manage_ls(int sock)
 	int					r;
 	t_trame				*trame;
 
+//	printf("MANAGE _LS");
 	while ((r = recv(sock, buff, TRANS_SIZE, 0)) != 0)
 	{
 		if (r == -1)
@@ -81,7 +82,8 @@ int					manage_get(t_trame trame, int sock)
 		send_command(T_GET, OK, sock, 0);
 		if(recev_file(sock, fd, trame.size, T_GET) == -1)
 			ret = 0;
-		ret = 1;
+		else
+			ret = 1;
 		close(fd);
 	}
 	else
@@ -90,12 +92,13 @@ int					manage_get(t_trame trame, int sock)
 		print_error(strerror(errno));
 		ret = 0;
 	}
+//	printf("END GET COMMAND\n");
 	return (ret);
 }
 
 int					parse_msg(t_trame trame, int sock, t_info *info)
 {
-	printf("DEBUG PARSE MESSAGE :type : %s | value : %s\n", trame.type, trame.value);
+//	printf("DEBUG PARSE MESSAGE :type : %s | value : %s\n", trame.type, trame.value);
 	if (ft_memcmp(trame.type, T_LOG, CMD_SIZE) == 0)
 	{
 		manage_login(sock, trame.value);
@@ -116,8 +119,6 @@ int					parse_msg(t_trame trame, int sock, t_info *info)
 		if (info->path)
 			free(info->path);
 		info->path = ft_strdup(trame.value);
-//		ft_bzero(info->path, sizeof(info->path));
-//		ft_memcpy(info->path, trame.value, ft_strlen(trame.value));
 		return (1);
 	}
 	else if (ft_memcmp(trame.type, T_GET, CMD_SIZE) == 0)
@@ -149,6 +150,7 @@ void					prompt(int sock, t_info	info)
 	get_next_line(0, &u_input);
 	if (ft_strlen(u_input) > 0)
 	{
+//		printf("PARSE COMMAND \n");
 		if (parse_command(u_input, sock) == 0)
 		{
 //			free(&u_input);

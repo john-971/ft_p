@@ -12,7 +12,7 @@ int			get_command(int sock, t_trame trame, t_info *info)
 	int 		fd;
 	off_t		size;
 
-//	printf("DEBUG : get_command => PATH : %s | PATH : %s\n", trame.value, info->base_path);
+	printf("DEBUG : get_command => PATH : %s | PATH : %s\n", trame.value, info->path);
 
 	if (check_arg(trame.value) == 1)
 		send_message(T_MSG_KO, "Merci de donner un nom de fichier et nom un path", sock);
@@ -48,10 +48,11 @@ int			get_command(int sock, t_trame trame, t_info *info)
 		print_error(get_error());
 		send_message(T_MSG_KO, get_error(), sock);
 	}
+	printf("END OF GET \n");
 	return (RET_OK);
 }
 
-int				put_command(int sock, t_trame trame, t_info *info)
+int				put_command(int sock, t_trame trame)
 {
 	int 			fd;
 	int 			ret;

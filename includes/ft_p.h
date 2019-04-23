@@ -36,8 +36,6 @@
 #define T_CD 	"<CWD>"
 #define T_PWD 	"<PWD>"
 
-//USHRT_MAX pour le transfert de fichiers !
-
 typedef struct 	s_trame
 {
 	char		type[6];
@@ -111,7 +109,7 @@ char					*set_path(char *path);
  ** file_operation.c
 **/
 int						get_command(int sock, t_trame trame, t_info *info);
-int						put_command(int sock, t_trame trame, t_info *info);
+int						put_command(int sock, t_trame trame);
 
 
 /**

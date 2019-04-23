@@ -12,7 +12,8 @@ void		send_message(uint8_t type_message, char *value, int sock)
 	trame.type_msg = type_message;
 	trame.type[5] = '\0';
 	ft_memcpy(trame.value, value, size);
-	trame.value[size + 1] = '\0';
+	printf("SIZE VALUE %i\n", size);
+	trame.value[size] = '\0';
 	send(sock, &trame, sizeof(trame), 0);
 }
 
@@ -24,10 +25,10 @@ void		send_command(char *type, char *value, int sock, off_t size)
 	ft_memcpy(trame.type, type, CMD_SIZE);
 	trame.type[5] = '\0';
 	ft_memcpy(trame.value, value, ft_strlen(value));
-//	trame.value[TRANS_SIZE] = '\0';
+	trame.value[TRANS_SIZE] = '\0';
 
 	trame.size = size;
-
+//	printf("DEBUG : LISTEN => VALUE : %s | TYPE : %s | LEN %zu\n", trame.value, trame.type, ft_strlen(trame.value));
 	send(sock, &trame, sizeof(trame), 0);
 }
 
@@ -37,6 +38,8 @@ t_trame					listen_sock(int sock)
 	char				*buff[sizeof(t_trame) + 1];
 	t_trame				*trame;
 
+//	ft_bzero(buff, sizeof(t_trame) + 1);
+//	printf("LISTEN SOCK !!! \n");
 	r = recv(sock, buff, sizeof(t_trame), 0);
 	buff[r] = "\0";
 	trame = (t_trame *)buff;
@@ -46,6 +49,8 @@ t_trame					listen_sock(int sock)
 		trame->error = 1;
 	}
 	trame->read = r;
+
+//	printf("DEBUG : LISTEN => VALUE : %s | TYPE : %s\n", trame->value, trame->type);
 	return *trame;
 }
 

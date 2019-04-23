@@ -37,13 +37,13 @@ int						manage_login(int sock)
 	}
 }
 
-void					main_process(int m_sock, uint32_t cslen, struct sockaddr_in csin)
+void					main_process(int m_sock, uint32_t cslen)
 {
 	int 				cs;
 	t_trame				trame;
-	int					r;
 	int 				pid;
 	t_info				info;
+	struct sockaddr_in	csin;
 
 	while ((cs = accept(m_sock, (struct sockaddr*)&csin, &cslen)) != -1)
 	{
@@ -59,6 +59,7 @@ void					main_process(int m_sock, uint32_t cslen, struct sockaddr_in csin)
 				info.base_path = NULL;
 				info.path = NULL;
 				info.base_path = set_path(info.base_path);
+				info.path = set_path(info.path);
 //				printf("START PATH ! : %s : lvls %i\n", info.base_path, info.b_path_lvl);
 				printf("\033[0;33mClient [%i], logged \033[0m\n", cs);
 				while (1)
@@ -81,15 +82,15 @@ int 					main(int ac, char **av)
 	int 				port;
 	int 				m_sock;
 	uint32_t	 		cslen;
-	struct sockaddr_in	csin;
 
+	cslen = 0;
 	if (ac != 2)
 		usage(av[0]);
 	port = atoi(av[1]);
 	m_sock = create_server(port);
 	if (m_sock != -1)
 	{
-		main_process(m_sock, cslen, csin);
+		main_process(m_sock, cslen);
 		printf("END OF PROGRAM \n");
 	}
 	else

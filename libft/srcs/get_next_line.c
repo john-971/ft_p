@@ -12,8 +12,6 @@
 
 #include "../includes/get_next_line.h"
 
-#include "../includes/get_next_line.h"
-
 static int		check_stock(char **stock, char ***line, char *buffer)
 {
 	char *ptr;

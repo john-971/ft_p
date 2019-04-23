@@ -11,7 +11,7 @@
 #******************************************************************************#
 
 CC=gcc
-CFLAGS=-Wall -Wextra -Werror
+CFLAGS=-Wall -Wextra -Werror -g
 NAME=libft.a
 DIRSRCS=srcs/
 SRCS=$(DIRSRCS)ft_strlen.c \

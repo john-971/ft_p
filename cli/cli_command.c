@@ -45,11 +45,9 @@ void	free_tab(char **tab)
 	j = 0;
 	while (tab && tab[j])
 	{
-		print_succes("IN FREE TAB");
 		free(tab[j]);
 		j++;
 	}
-	print_succes("END FREE TAB");
 	free(tab);
 }
 
@@ -74,6 +72,7 @@ int		parse_command(char *input, int sock)
 	}
 	else if (ft_strcmp(commands[0], "get") == 0)
 	{
+
 		if (commands[1] && ft_strlen(commands[1]) > 0)
 			send_command(T_GET, commands[1], sock, 0);
 		else

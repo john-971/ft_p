@@ -44,6 +44,7 @@ void				format_path(t_info *info, int sock, char *type)
 		send_message(T_MSG_OK, PWD_GOOD, sock);
 	else if(type == T_CD)
 		send_message(T_MSG_OK, CWD_OK, sock);
+	printf("END PWD\n");
 }
 
 void				cd_command(int sock, t_trame trame, t_info *info)

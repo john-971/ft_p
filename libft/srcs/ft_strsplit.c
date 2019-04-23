@@ -13,76 +13,67 @@
 #include "libft.h"
 #include <stdlib.h>
 
-int		ft_part_len(char const *s, char c)
+static int		is_del(char c, char ch)
 {
-	int	i;
-
-	i = 0;
-	while (s[i] && s[i] != c)
-		i++;
-	return (i);
+	if (c == ch)
+		return (1);
+	return (0);
 }
 
-int		ft_part_num(char const *s, char c)
+static int		find_nb_w(char *str, char ch)
 {
-	int	i;
-	int	nb;
+	int result;
 
-	i = 0;
-	nb = 0;
-	while (s[i])
+	result = 0;
+	while (*str)
 	{
-		if ((i == 0 && s[i] != c) || (s[i] != c && s[i - 1] == c))
-			nb++;
-		i++;
+		while (is_del(*str, ch))
+			str++;
+		if (*str)
+			result++;
+		while (!is_del(*str, ch) && *str)
+			str++;
 	}
-	return (nb + 1);
+	return (result);
 }
 
-char	**ft_creatab(char **tab, char const *s, char c)
+static char		**split_func(char *str, int nb_words, int *i, char ch)
 {
-	int	i;
-	int	j;
+	int		i3;
+	int		word_size;
+	char	**result;
 
-	i = 0;
-	j = 0;
-	while (s[i])
+	if (!(result = malloc(sizeof(char*) * (nb_words + 1))))
+		return (NULL);
+	while (i[0] < nb_words)
 	{
-		if ((i == 0 && s[i] != c) || (s[i] != c && s[i - 1] == c))
-		{
-			tab[j] = malloc(sizeof(*tab) * ft_part_len(s + i, c));
-			if (tab[j] != NULL)
-			{
-				ft_memcpy(tab[j], s + i, ft_part_len(s + i, c));
-			}
-			j++;
-		}
-		i++;
+		while (is_del(str[i[1]], ch))
+			i[1]++;
+		word_size = 0;
+		while (!is_del(str[i[1] + word_size], ch) && str[i[1] + word_size])
+			word_size++;
+		if (!(result[i[0]] = malloc(sizeof(char) * (word_size + 1))))
+			return (NULL);
+		i3 = -1;
+		while (++i3 < word_size)
+			result[i[0]][i3] = str[i[1] + i3];
+		result[i[0]][i3] = '\0';
+		i[1] += word_size;
+		i[0]++;
 	}
-	tab[j] = NULL;
-	return (tab);
+	result[i[0]] = 0;
+	return (result);
 }
 
-char	**ft_strsplit(char const *s, char c)
+char			**ft_strsplit(char const *s, char c)
 {
-	char	**tab;
-	int		nb;
+	int i[2];
 
-	tab = NULL;
-	if (s == NULL || c == 0)
+	if (s && c)
 	{
-		tab = malloc(sizeof(tab));
-		if (tab != NULL)
-		{
-			*tab = malloc(sizeof(*tab));
-			if (*tab != NULL)
-				tab[0][0] = '\0';
-		}
-		return (tab);
+		i[0] = 0;
+		i[1] = 0;
+		return (split_func((char*)s, find_nb_w((char*)s, c), i, c));
 	}
-	nb = ft_part_num(s, c);
-	tab = malloc(sizeof(tab) * nb);
-	if (tab != NULL)
-		tab = ft_creatab(tab, s, c);
-	return (tab);
+	return (NULL);
 }

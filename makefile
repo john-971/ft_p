@@ -63,7 +63,7 @@ $(NAME_CLIENT): $(OBJ_CLIENT)
 
 clean:
 	rm -f $(OBJ_CLIENT)
-	rm -f $(OBJ_CLIENT)
+	rm -f $(OBJ_SERVER)
 #	make clean -C libft/
 	@echo "\033[36m◉ \033[33mclean done\033[0m"
 
