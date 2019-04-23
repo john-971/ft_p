@@ -56,7 +56,9 @@ void					main_process(int m_sock, uint32_t cslen, struct sockaddr_in csin)
 			printf("\033[0;33mClient connected [%i] \033[0m\n", cs);
 			if (manage_login(cs) == 0)
 			{
-				init_path(&info, cs);
+				info.base_path = NULL;
+				info.path = NULL;
+				info.base_path = set_path(info.base_path);
 //				printf("START PATH ! : %s : lvls %i\n", info.base_path, info.b_path_lvl);
 				printf("\033[0;33mClient [%i], logged \033[0m\n", cs);
 				while (1)

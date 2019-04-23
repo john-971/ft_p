@@ -27,12 +27,14 @@ void			print_status_bar(off_t c_size, off_t f_size)
 {
 	int			part;
 	int 		i;
+	char 		*percent;
 
 	i = 0;
 	part = (100 * c_size) / f_size;
+	percent = ft_itoa(part);
 	ft_putchar('\r');
 	ft_putstr("\033[0;45m");
-	ft_putstr(ft_itoa(part));
+	ft_putstr(percent);
 	ft_putchar('%');
 	while (i < part)
 	{
@@ -40,5 +42,6 @@ void			print_status_bar(off_t c_size, off_t f_size)
 			ft_putchar(' ');
 		i++;
 	}
+	free(percent);
 	ft_putstr("\033[0m");
 }

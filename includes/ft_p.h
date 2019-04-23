@@ -50,9 +50,9 @@ typedef struct 	s_trame
 
 typedef struct 	s_info
 {
-	char		base_path[PATH_MAX];
+	char		*base_path;
 	int			b_path_lvl;
-	char		path[PATH_MAX];
+	char		*path;
 }				t_info;
 
 
@@ -72,6 +72,7 @@ typedef struct 	s_info
 #define ERROR_DEFAULT "Une erreur est surevenu"
 #define ERROR_FILE_RECPT "Une erreur est surevenu dans la récupération du fichier"
 #define ERR_NAMETOOLONG "Le nom du fichier est trop long"
+#define ERR_CD "Retour a la racine"
 
 #define ABORT "-1"
 #define OK "0"
@@ -104,6 +105,7 @@ int						manage_command(int cs, t_trame trame, t_info *info);
 **/
 void					cd_command(int sock, t_trame trame, t_info *info);
 void					format_path(t_info *info, int sock, char *type);
+char					*set_path(char *path);
 
 /**
  **====================== CLIENT SIDE

@@ -26,9 +26,15 @@ void					manage_login(int sock, char *msg_value)
 		ft_putstr("Password :");
 	get_next_line(0, &u_input);
 	if (ft_strlen(u_input) > 0)
+	{
 		send_command(T_LOG, u_input, sock, 0);
+		free(u_input);
+	}
 	else
+	{
+		free(u_input);
 		manage_login(sock, msg_value);
+	}
 }
 
 void					manage_ls(int sock)
@@ -110,8 +116,11 @@ int					parse_msg(t_trame trame, int sock, t_info *info)
 	}
 	else if (ft_memcmp(trame.type, T_CD, CMD_SIZE) == 0)
 	{
-		ft_bzero(info->path, sizeof(info->path));
-		ft_memcpy(info->path, trame.value, ft_strlen(trame.value));
+		if (info->path)
+			free(info->path);
+		info->path = ft_strdup(trame.value);
+//		ft_bzero(info->path, sizeof(info->path));
+//		ft_memcpy(info->path, trame.value, ft_strlen(trame.value));
 		return (1);
 	}
 	else if (ft_memcmp(trame.type, T_GET, CMD_SIZE) == 0)
@@ -145,8 +154,12 @@ void					prompt(int sock, t_info	info)
 	if (ft_strlen(u_input) > 0)
 	{
 		if (parse_command(u_input, sock) == 0)
+		{
+//			free(&u_input);
 			return ;
+		}
 	}
+//	free(&u_input);
 	prompt(sock, info);
 }
 
@@ -159,7 +172,7 @@ void					main_process(int m_sock, uint32_t cslen, struct sockaddr_in csin)
 
 	ft_bzero(&trame, sizeof(t_trame));
 	ft_bzero(&info, sizeof(t_info));
-	info.path[0] = '/';
+	info.path = ft_strdup("/");
 	while (1)
 	{
 		if ((trame = listen_sock(m_sock)).error == 1)

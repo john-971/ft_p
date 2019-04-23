@@ -38,10 +38,24 @@ int				manage_put(int sock, char *file_path)
 	return (0);
 }
 
+void	free_tab(char **tab)
+{
+	int j;
+	while (tab[j])
+	{
+		print_succes("IN FREE TAB");
+		free(tab[j]);
+		j++;
+	}
+	free(tab);
+}
+
 int		parse_command(char *input, int sock)
 {
 	char 	**commands;
+	int 	ret;
 
+	ret = 0;
 //	printf("PARSE COMMANDS :\n");
 	commands = ft_strsplit(input, ' ');
 	if (ft_strcmp(commands[0], "ls") == 0)
@@ -62,23 +76,24 @@ int		parse_command(char *input, int sock)
 		else
 		{
 			print_error(PARAM_MISSING);
-			return (1);
+			ret = 1;
 		}
 	}
 	else if (ft_strcmp(commands[0], "put") == 0)
 	{
 		if (commands[1] && ft_strlen(commands[1]) > 0)
-			return (manage_put(sock, commands[1]));
+			ret = manage_put(sock, commands[1]);
 		else
 		{
 			print_error(PARAM_MISSING);
-			return (1);
+			ret = 1;
 		}
 	}
 	else
 	{
 		print_error(COMMAND_NOT_FOUND);
-		return (1);
+		ret = 1;
 	}
-	return (0);
+	free_tab(commands);
+	return (ret);
 }

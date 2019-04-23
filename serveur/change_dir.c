@@ -4,57 +4,20 @@
 ** Gestion de la commande cd pour se deplacer sur le serveur
 */
 
-int						count_dir_level(char *path)
+char					*set_path(char *path)
 {
-	int 				counter;
+	char 				cwd[TRANS_SIZE];
 
-	counter = 0;
-	if (path[0] == '.' && path[1] == '.' && !path[2])
-		return 1;
-	while(*path != '\0')
+	if(getcwd(cwd, TRANS_SIZE) == NULL)
 	{
-		if (*path == '/')
-			counter++;
-		path++;
-	}
-	return counter;
-}
-
-void					init_path(t_info *info, int sock)
-{
-	char 				start_dir[PATH_MAX];
-
-	if(getcwd(start_dir, sizeof(start_dir)) == NULL)
-	{
-		send_message(T_MSG_KO, get_error(), sock);
+		print_error(get_error());
 		exit(-1);
 	}
-	ft_memcpy(info->base_path, start_dir, ft_strlen(start_dir));
-	ft_memcpy(info->path, start_dir, ft_strlen(start_dir));
-	info->b_path_lvl = count_dir_level(start_dir);
-}
-
-char				*manage_go_back(t_info *info, char *go_to)
-{
-	int 			go_to_lvl;
-	int 			path_lvl;
-	int 			i;
-
-	i = 0;
-	if (go_to[0] == '/' && go_to[1] != '\0')
-	{
-		while (go_to[i] && go_to[++i] != '/')
-		{
-			if (go_to[i] != info->base_path[i])
-				return NULL;
-		}
-	}
-	go_to_lvl = count_dir_level(go_to);
-	path_lvl = count_dir_level(info->path);
-	if ((path_lvl - go_to_lvl) <= info->b_path_lvl)
-		return (info->base_path);
-	else
-		return (go_to);
+	if (path)
+		free(path);
+	path = ft_strdup(cwd);
+	print_succes(path);
+	return path;
 }
 
 void				format_path(t_info *info, int sock, char *type)
@@ -85,33 +48,31 @@ void				format_path(t_info *info, int sock, char *type)
 
 void				cd_command(int sock, t_trame trame, t_info *info)
 {
-	char 			cwd[PATH_MAX];
-	char 			*go_to;
+	char 			*path;
 
-	if (ft_strstr(trame.value, "..") || ft_strstr(trame.value, "..") || trame.value[0] == '/')
+	path = NULL;
+	if (chdir(trame.value) == 0)
 	{
-//		printf("DEBUG : FIND GO BACK IN CD\n");
-		go_to = manage_go_back(info, trame.value);
-		if (go_to == NULL)
+		path = set_path(path);
+//		printf("STRSTR %s <=> %s\n", path, info->base_path);
+		if (ft_strstr(path, info->base_path) == NULL || trame.value[0] == '/')
 		{
-			send_message(T_MSG_KO, ERR_ENOENT, sock);
-			return;
+//			printf("PATH NOT OK \n");
+			if (chdir(info->base_path) == 0)
+			{
+				info->path = set_path(info->path);
+				format_path(info, sock, T_CD);
+			}
+			else
+				send_message(T_MSG_KO, get_error(), sock);
 		}
-	}
-	else
-		go_to = trame.value;
-	if (chdir(go_to) == 0)
-	{
-
-		if(getcwd(cwd, sizeof(cwd)) == NULL)
+		else
 		{
-			send_message(T_MSG_KO, get_error(), sock);
-			return ;
+//			printf("PATH OK \n");
+			info->path = set_path(info->path);
+			format_path(info, sock, T_CD);
 		}
-		ft_bzero(info->path, sizeof(info->path));
-		ft_memcpy(&info->path, cwd, ft_strlen(cwd));
-//		printf("DEBUG : NEW PATH %s\n", info.path);
-		format_path(info, sock, T_CD);
+		free(path);
 	}
 	else
 		send_message(T_MSG_KO, get_error(), sock);
