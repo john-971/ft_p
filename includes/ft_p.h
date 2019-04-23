@@ -15,12 +15,13 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <sys/stat.h>
+#include <signal.h>
 
 
 #define TRANS_SIZE 2047
 #define FILE_SIZE 2047
-#define RET_KO 0
-#define RET_OK 1
+#define RET_KO 1
+#define RET_OK 0
 
 #define T_MSG	"<MSG>"
 #define T_MSG_OK 0
@@ -75,13 +76,13 @@ typedef struct 	s_info
 #define ABORT "-1"
 #define OK "0"
 #define RETRY "1"
-#define MAX_RETRY 10
 
 #define GOOD_LOG "Login ok !"
 #define CWD_OK "Changement du répertoire de travail !"
 #define LS_GOOD "Récupération du contenu du répertoire"
 #define PWD_GOOD "Récupération du répertoire courant"
 #define GET_OK "Téléchargement du fichier terminer"
+#define PUT_OK "Upload du fichier terminer"
 
 #define RET_EXIT_FAIL 256
 
@@ -133,6 +134,7 @@ void					print_status_bar(off_t c_size, off_t f_size);
 void					send_message(uint8_t type_message, char *value, int sock);
 void					send_command(char *type, char *value, int sock, off_t size);
 t_trame					listen_sock(int sock);
+int						wait_response(int sock);
 
 /**
  ** create_socket.c
@@ -148,7 +150,12 @@ char					*get_error();
 /**
  ** file_management.c
 **/
-void					send_file(int fd, int sock);
+int						send_file(int fd, int sock, off_t f_size, char *type);
 off_t					get_file_size(int fd, int sock);
-int						recev_file(int sock, off_t c_size, int fd, off_t f_size);
+int						recev_file(int sock, int fd, off_t f_size, char *type);
+
+/**
+ ** tools.c
+**/
+char			*get_name_from_path(char *path);
 #endif

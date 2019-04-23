@@ -29,6 +29,7 @@ SRC_SERVER = ./serveur/main.c \
 			./common/create_socket.c \
 			./common/output.c \
 			./common/file_management.c \
+			./common/tools.c \
 			./common/manage_errno.c
 
 SRC_CLIENT = ./cli/main.c \
@@ -37,6 +38,7 @@ SRC_CLIENT = ./cli/main.c \
 			./common/send_receive.c \
 			./common/create_socket.c \
 			./common/file_management.c \
+			./common/tools.c \
 			./common/manage_errno.c
 
 

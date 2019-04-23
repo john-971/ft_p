@@ -1,5 +1,43 @@
 #include "../includes/ft_p.h"
 
+
+int				manage_put(int sock, char *file_path)
+{
+	int 		fd;
+	off_t		size;
+	t_trame		trame;
+
+//	printf("DEBUG : get_command => PATH : %s | SIZE : %llu\n", trame.value, trame.size);
+
+	if ((fd = open(file_path, O_RDWR)) != -1)
+	{
+		if ((size = get_file_size(fd, sock)) == -1)
+			return (1);
+		send_command(T_PUT, get_name_from_path(file_path), sock, size);
+		trame = listen_sock(sock);
+		if (trame.error == -1)
+		{
+			close(fd);
+			return (1);
+		}
+		if (ft_strcmp(trame.value, OK) == 0)
+		{
+			send_file(fd, sock, size, T_PUT);
+		}
+		else{
+			printf("DEBUG : GET COMMAND CLIENT ABORT\n");
+		}
+		close(fd);
+	}
+	else
+	{
+		printf("OPEN FAIL \n");
+		print_error(get_error());
+		return (1);
+	}
+	return (0);
+}
+
 int		parse_command(char *input, int sock)
 {
 	char 	**commands;
@@ -21,6 +59,16 @@ int		parse_command(char *input, int sock)
 	{
 		if (commands[1] && ft_strlen(commands[1]) > 0)
 			send_command(T_GET, commands[1], sock, 0);
+		else
+		{
+			print_error(PARAM_MISSING);
+			return (1);
+		}
+	}
+	else if (ft_strcmp(commands[0], "put") == 0)
+	{
+		if (commands[1] && ft_strlen(commands[1]) > 0)
+			return (manage_put(sock, commands[1]));
 		else
 		{
 			print_error(PARAM_MISSING);

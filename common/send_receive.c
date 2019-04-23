@@ -37,12 +37,9 @@ t_trame					listen_sock(int sock)
 	char				*buff[sizeof(t_trame) + 1];
 	t_trame				*trame;
 
-	printf("LISTEN SOCK !!!!\n");
 	r = recv(sock, buff, sizeof(t_trame), 0);
 	buff[r] = "\0";
-//	printf("DEBUG : LISTEN SOCK TRAME\n");
 	trame = (t_trame *)buff;
-//	printf("DEBUG : LISTEN SOCK TRAME %i\n", r);
 	if (r <= 0)
 	{
 		printf("ERROR ON LISTEN SOCK\n");
@@ -50,6 +47,18 @@ t_trame					listen_sock(int sock)
 	}
 	trame->read = r;
 	return *trame;
+}
+
+int						wait_response(int sock)
+{
+	t_trame				trame;
+
+	trame = listen_sock(sock);
+	if (trame.error == 1)
+		return (1);
+	if (ft_strcmp(trame.value, OK) == 0)
+		return (0);
+	return (1);
 }
 
 

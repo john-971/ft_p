@@ -15,48 +15,59 @@ off_t			get_file_size(int fd, int sock)
 	return (-1);
 }
 
-void			send_file(int fd, int sock)
+int			send_file(int fd, int sock, off_t f_size, char *type)
 {
 	int 		r;
 	char 		buff[FILE_SIZE + 1];
 	t_trame		trame;
+	off_t		curr_size;
 
-	printf("DEBUG : GET COMMAND CLIENT SAID OK\n");
+	curr_size = 0;
 	while ((r = read(fd, buff, FILE_SIZE)) > 0)
 	{
+		curr_size += r;
 		buff[r] = '\0';
-//		printf("DEBUG : read size => %i \n %s\n", r, buff);
 		send(sock, buff, r, 0);
-		ft_bzero(buff, FILE_SIZE + 1);
-
+		ft_bzero(buff, FILE_SIZE);
 		trame = listen_sock(sock);
-		if (trame.error == -1)
-			exit(EXIT_FAILURE);
+		if (trame.error == 1)
+		{
+			printf("DEBUG : TRAME ERROR\n");
+			return (RET_KO);
+		}
 		if (trame.value == ABORT)
-			return ;
+			return (RET_KO);
+		if (type == T_PUT)
+			print_status_bar(curr_size, f_size);
 	}
+	ft_putchar('\n');
+	return (RET_OK);
 	send_message(T_MSG_OK, GET_OK, sock);
 }
 
-int				recev_file(int sock, int fd, off_t f_size)
+int				recev_file(int sock, int fd, off_t f_size, char *type)
 {
 	t_trame		file_trame;
 	char 		buff[FILE_SIZE + 1];
 	int			r;
 	off_t		curr_size;
 
-	while ((long)c_size < (long)f_size)
+	curr_size = 0;
+	while ((long)curr_size < (long)f_size)
 	{
 		r = recv(sock, buff, FILE_SIZE, 0);
-		c_size += write(fd, buff, r);
-		if (c_size == -1)
+		if (r == -1)
+			return -1;
+		curr_size += write(fd, buff, r);
+		if (curr_size == -1)
 		{
 			print_error(get_error());
-			send_command(T_GET, ABORT, sock, 0);
+			send_command(type, ABORT, sock, 0);
 			return -1;
 		}
-		send_command(T_GET, OK, sock, 0);
-		print_status_bar(c_size, f_size);
+		send_command(type, OK, sock, 0);
+		if (type == T_GET)
+			print_status_bar(curr_size, f_size);
 	}
 	ft_putchar('\n');
 	return 0;

@@ -9,6 +9,11 @@ void 					usage(char *str)
 	exit(EXIT_FAILURE);
 }
 
+void sig_fpe(int sig)
+{
+	printf("LE SIGNAL EST INTERCEPTER %i\n", sig);
+	exit(EXIT_SUCCESS);
+}
 
 void					manage_login(int sock, char *msg_value)
 {
@@ -32,9 +37,8 @@ void					manage_ls(int sock)
 	int					r;
 	t_trame				*trame;
 
-	while (1)
+	while ((r = recv(sock, buff, TRANS_SIZE, 0)) != 0)
 	{
-		r = recv(sock, buff, TRANS_SIZE, 0);
 		if (r == -1)
 		{
 			print_error(ERROR_EXEC);
@@ -52,6 +56,7 @@ void					manage_ls(int sock)
 		if(r < TRANS_SIZE)
 			break;
 	}
+	send_message(T_MSG_OK, OK, sock);
 }
 
 void				manage_pwd(t_trame trame, int sock)
@@ -65,12 +70,11 @@ int					manage_get(t_trame trame, int sock)
 	int 			fd;
 	int 			ret;
 
-	curr_size = 0;
 //	printf("DEBUG : MANAGE GET => NAME : %s | SIZE : %llu\n", trame.value, trame.size);
 	if ((fd = open(trame.value, O_CREAT | O_RDWR | O_TRUNC, 0777)) != -1)
 	{
 		send_command(T_GET, OK, sock, 0);
-		if(recev_file(sock, curr_size, fd, trame.size) == -1)
+		if(recev_file(sock, fd, trame.size, T_GET) == -1)
 			ret = 0;
 		ret = 1;
 		close(fd);
@@ -183,6 +187,14 @@ int 					main(int ac, char **av)
 	m_sock = create_client(av[1], port);
 	if (m_sock != -1)
 	{
+		if (signal(SIGINT, sig_fpe) == SIG_ERR)
+		{
+			print_error("Le gestionnaire de signal pour SIG_FPE n'a pu etre defini.");
+		}
+		else
+		{
+			print_succes("Le gestionnaire de signal pour SIG_FPE a pu etre defini.");
+		}
 		printf("Connected to %s\n", av[1]);
 		main_process(m_sock, cslen, csin);
 		printf("END OF PROGRAM \n");
