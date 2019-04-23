@@ -18,13 +18,14 @@ PATH_INC = ./includes/
 
 PATH_INC_LIBFT = ./libft/includes/
 INCLUDES = -I $(PATH_INC) -I $(PATH_INC_LIBFT)
-CFLAGS =   $(INCLUDES)
+CFLAGS =  -Wall -Werror -Wextra $(INCLUDES)
 
 LIBS = -L libft/ -lft -lm
 
 SRC_SERVER = ./serveur/main.c \
 			./serveur/server_command.c \
 			./serveur/change_dir.c \
+			./serveur/file_operation.c \
 			./common/send_receive.c \
 			./common/create_socket.c \
 			./common/output.c \

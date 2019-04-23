@@ -59,7 +59,7 @@ char	**ft_creatab(char **tab, char const *s, char c)
 		}
 		i++;
 	}
-	tab[j] = 0;
+	tab[j] = NULL;
 	return (tab);
 }
 

@@ -2,7 +2,6 @@
 
 off_t			get_file_size(int fd, int sock)
 {
-	off_t		size;
 	struct stat buff;
 
 
@@ -23,8 +22,10 @@ int			send_file(int fd, int sock, off_t f_size, char *type)
 	off_t		curr_size;
 
 	curr_size = 0;
+	print_succes("in send file");
 	while ((r = read(fd, buff, FILE_SIZE)) > 0)
 	{
+//		print_succes("in send file");
 		curr_size += r;
 		buff[r] = '\0';
 		send(sock, buff, r, 0);
@@ -32,14 +33,19 @@ int			send_file(int fd, int sock, off_t f_size, char *type)
 		trame = listen_sock(sock);
 		if (trame.error == 1)
 		{
-			printf("DEBUG : TRAME ERROR\n");
+			print_error("DEBUG : TRAME ERROR\n");
 			return (RET_KO);
 		}
 		if (trame.value == ABORT)
+		{
+			print_error("SEND FILE ABORT");
 			return (RET_KO);
+		}
+
 		if (type == T_PUT)
 			print_status_bar(curr_size, f_size);
 	}
+	print_succes("END OF SEND_FILE");
 	ft_putchar('\n');
 	return (RET_OK);
 	send_message(T_MSG_OK, GET_OK, sock);
@@ -47,14 +53,15 @@ int			send_file(int fd, int sock, off_t f_size, char *type)
 
 int				recev_file(int sock, int fd, off_t f_size, char *type)
 {
-	t_trame		file_trame;
 	char 		buff[FILE_SIZE + 1];
 	int			r;
 	off_t		curr_size;
 
 	curr_size = 0;
+	print_succes("in recv file");
 	while ((long)curr_size < (long)f_size)
 	{
+//		printf("IN RECEIV %lu\n", curr_size);
 		r = recv(sock, buff, FILE_SIZE, 0);
 		if (r == -1)
 			return -1;

@@ -3,8 +3,6 @@
 char			*get_name_from_path(char *path)
 {
 	char 		*name;
-	int 		i;
-	int 		nb_lvl;
 
 	name = path;
 	while((path = ft_memchr(path, '/', ft_strlen(path))) != NULL)

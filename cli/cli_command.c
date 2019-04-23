@@ -41,12 +41,15 @@ int				manage_put(int sock, char *file_path)
 void	free_tab(char **tab)
 {
 	int j;
-	while (tab[j])
+
+	j = 0;
+	while (tab && tab[j])
 	{
 		print_succes("IN FREE TAB");
 		free(tab[j]);
 		j++;
 	}
+	print_succes("END FREE TAB");
 	free(tab);
 }
 
@@ -95,5 +98,6 @@ int		parse_command(char *input, int sock)
 		ret = 1;
 	}
 	free_tab(commands);
+	free(input);
 	return (ret);
 }

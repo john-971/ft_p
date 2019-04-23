@@ -18,7 +18,6 @@ void sig_fpe(int sig)
 void					manage_login(int sock, char *msg_value)
 {
 	char 				*u_input;
-	int					r;
 
 	if (ft_memcmp(msg_value, V_LOGIN, ft_strlen(V_LOGIN)) == 0)
 		ft_putstr("Login :");
@@ -65,7 +64,7 @@ void					manage_ls(int sock)
 	send_message(T_MSG_OK, OK, sock);
 }
 
-void				manage_pwd(t_trame trame, int sock)
+void				manage_pwd(t_trame trame)
 {
 	printf("%s\n", trame.value);
 }
@@ -96,9 +95,7 @@ int					manage_get(t_trame trame, int sock)
 
 int					parse_msg(t_trame trame, int sock, t_info *info)
 {
-	char				*value;
-
-//	printf("DEBUG PARSE MESSAGE :type : %s | value : %s\n", trame.type, trame.value);
+	printf("DEBUG PARSE MESSAGE :type : %s | value : %s\n", trame.type, trame.value);
 	if (ft_memcmp(trame.type, T_LOG, CMD_SIZE) == 0)
 	{
 		manage_login(sock, trame.value);
@@ -111,7 +108,7 @@ int					parse_msg(t_trame trame, int sock, t_info *info)
 	}
 	else if (ft_memcmp(trame.type, T_PWD, CMD_SIZE) == 0)
 	{
-		manage_pwd(trame, sock);
+		manage_pwd(trame);
 		return (1);
 	}
 	else if (ft_memcmp(trame.type, T_CD, CMD_SIZE) == 0)
@@ -147,7 +144,6 @@ int					parse_msg(t_trame trame, int sock, t_info *info)
 void					prompt(int sock, t_info	info)
 {
 	char 				*u_input;
-	char 				*cmd;
 
 	print_prompt(info.path);
 	get_next_line(0, &u_input);
@@ -163,11 +159,10 @@ void					prompt(int sock, t_info	info)
 	prompt(sock, info);
 }
 
-void					main_process(int m_sock, uint32_t cslen, struct sockaddr_in csin)
+void					main_process(int m_sock)
 {
 
 	t_trame				trame;
-	int 				r;
 	t_info				info;
 
 	ft_bzero(&trame, sizeof(t_trame));
@@ -191,8 +186,6 @@ int 					main(int ac, char **av)
 {
 	int 				port;
 	int 				m_sock;
-	uint32_t	 		cslen;
-	struct sockaddr_in	csin;
 
 	if (ac != 3)
 		usage(av[0]);
@@ -209,7 +202,7 @@ int 					main(int ac, char **av)
 			print_succes("Le gestionnaire de signal pour SIG_FPE a pu etre defini.");
 		}
 		printf("Connected to %s\n", av[1]);
-		main_process(m_sock, cslen, csin);
+		main_process(m_sock);
 		printf("END OF PROGRAM \n");
 	}
 	else

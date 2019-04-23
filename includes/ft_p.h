@@ -108,6 +108,13 @@ void					format_path(t_info *info, int sock, char *type);
 char					*set_path(char *path);
 
 /**
+ ** file_operation.c
+**/
+int						get_command(int sock, t_trame trame, t_info *info);
+int						put_command(int sock, t_trame trame, t_info *info);
+
+
+/**
  **====================== CLIENT SIDE
 **/
 

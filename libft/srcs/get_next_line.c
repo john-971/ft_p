@@ -10,60 +10,92 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/get_next_line.h"
 
-static int		ft_linechr(char *tamp, size_t i)
+#include "../includes/get_next_line.h"
+
+static int		check_stock(char **stock, char ***line, char *buffer)
 {
-	while (tamp[i])
-	{
-		if (tamp[i] == '\n')
-			return (i);
-		i++;
-	}
+	char *ptr;
+
+	if (*stock == NULL)
+		*stock = ft_strnew(1);
+	if (*stock)
+		if ((ptr = ft_strchr(*stock, '\n')))
+		{
+			*ptr = '\0';
+			**line = ft_strjoin(*stock, buffer);
+			free(*stock);
+			*stock = ft_strdup(ptr + 1);
+			ft_bzero(buffer, BUFF_SIZE + 1);
+			free(buffer);
+			return (1);
+		}
 	return (0);
 }
 
-static int		test(int ret, char **tamp)
+static int		check_tmp(char *tmp, char ***line, char **stock, char *buffer)
 {
-	size_t i;
-
-	i = 0;
-	if (ret == 0 && **tamp)
+	if (tmp)
 	{
-		if ((i = ft_linechr(*tamp, i)) != 0)
-			*tamp = ft_strsub(*tamp, (i + 1), ft_strlen(*tamp + i + 1));
-		else
-			ft_strdel(tamp);
+		*tmp = '\0';
+		**line = ft_strjoin(*stock, buffer);
+		free(*stock);
+		*stock = ft_strdup(tmp + 1);
+		ft_bzero(buffer, BUFF_SIZE + 1);
+		free(buffer);
 		return (1);
 	}
+	return (-1);
+}
+
+static int		ft_return(int ret, char *stock, char ***line)
+{
+	if (ret < 0)
+		return (-1);
+	if (stock == NULL)
+		return (0);
+	**line = ft_strdup(stock);
+	free(stock);
 	return (0);
+}
+
+static int		ft_checkdown(char ***line, char **stock)
+{
+	if (*stock)
+	{
+		**line = ft_strdup(*stock);
+		ft_strdel(*&stock);
+		return (0);
+	}
+	else
+		return (-1);
 }
 
 int				get_next_line(int const fd, char **line)
 {
+	static char *stock[256];
+	char		*ptr;
+	char		*tmp;
+	char		*buffer;
 	int			ret;
-	static char	*tamp = NULL;
-	char		buff[BUFF_SIZE];
-	size_t		i;
 
-	i = 0;
-	ret = 0;
-	tamp = (tamp ? tamp : ft_strnew(BUFF_SIZE));
-	while ((ret = read(fd, buff, BUFF_SIZE - 1)))
+	buffer = ft_strnew(BUFF_SIZE + 1);
+	if ((check_stock(&stock[fd], &line, buffer)) == 1)
+		return (1);
+	while ((ret = read(fd, buffer, BUFF_SIZE)) > 0)
 	{
-		buff[ret] = '\0';
-		tamp = ft_strjoin(tamp, buff);
-		i = ft_linechr(tamp, i);
-		if (i > 0 || tamp[i] == '\n')
-		{
-			*line = ft_strsub(tamp, 0, (i));
-			tamp = ft_strsub(tamp, (i + 1), ft_strlen(tamp + i + 1));
+		buffer[ret] = '\0';
+		tmp = ft_strchr(buffer, '\n');
+		if ((check_tmp(tmp, &line, &stock[fd], buffer)) == 1)
 			return (1);
-		}
+		ptr = stock[fd];
+		stock[fd] = ft_strjoin(stock[fd], buffer);
+		free(ptr);
 	}
-	if ((i = ft_linechr(tamp, i)) != 0)
-		*line = ft_strsub(tamp, 0, (i));
-	else
-		*line = ft_strsub(tamp, 0, ft_strlen(tamp));
-	return (test(ret, &tamp));
+	if (ret < 0)
+		return (ft_return(ret, stock[fd], &line));
+	if ((ft_checkdown(&line, &stock[fd])) == 0)
+		return (0);
+	return (ft_return(ret, stock[fd], &line));
 }
