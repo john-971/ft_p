@@ -6,6 +6,7 @@ int 					create_server(int port)
 	int 				sock;
 	struct protoent		*proto;
 	struct sockaddr_in	sin;
+	int 				sendbuff = FILE_SIZE;
 
 	proto = getprotobyname("tcp");
 	if (proto == 0)
@@ -15,6 +16,10 @@ int 					create_server(int port)
 		printf("ERROR\n");
 		return -1;
 	}
+//	int i = 1;
+//	res = setsockopt(sockfd, SOL_SOCKET, SO_SNDBUF, &sendbuff, sizeof(sendbuff));
+	int res = setsockopt(sock, SOL_SOCKET, SO_SNDBUF, &sendbuff, sizeof(sendbuff));
+	printf("RETROUR SETSOCKOPT : %i\n", res);
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(port);
 	sin.sin_addr.s_addr = htonl(INADDR_ANY);	// on accepte n'importe quelle adresse
@@ -32,6 +37,7 @@ int 					create_client(char *addr, int port)
 	int 				sock;
 	struct protoent		*proto;
 	struct sockaddr_in	sin;
+	int 				sendbuff = FILE_SIZE;
 
 	proto = getprotobyname("tcp");
 	if (proto == 0)
@@ -41,6 +47,9 @@ int 					create_client(char *addr, int port)
 		printf("ERROR\n");
 		return -1;
 	}
+
+	int res = setsockopt(sock, SOL_SOCKET, SO_SNDBUF, &sendbuff, sizeof(sendbuff));
+	printf("RETROUR SETSOCKOPT : %i\n", res);
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(port);
 	sin.sin_addr.s_addr = *((size_t *)(gethostbyname(addr))->h_addr_list[0]);

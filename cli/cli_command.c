@@ -57,8 +57,9 @@ int		parse_command(char *input, int sock)
 	int 	ret;
 
 	ret = 0;
-//	printf("PARSE COMMANDS :\n");
+
 	commands = ft_strsplit(input, ' ');
+	printf("PARSE COMMANDS : [0] : %s\n", commands[0]);
 	if (ft_strcmp(commands[0], "ls") == 0)
 		send_command(T_LS, input, sock, 0);
 	else if (ft_strcmp(commands[0], "pwd") == 0)

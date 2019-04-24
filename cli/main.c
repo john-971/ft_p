@@ -137,7 +137,7 @@ int					parse_msg(t_trame trame, int sock, t_info *info)
 			print_succes(trame.value);
 	}
 	else{
-		printf("DEBUG : TYPE UNKNOW\n");
+		printf("DEBUG : TYPE UNKNOW => TYPE : %s , Value : %s \n", trame.type, trame.value);
 	}
 	return (0);
 }

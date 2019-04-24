@@ -4,6 +4,8 @@ conception d'un serveur et d'un client ftp
 
 //A FAIRE
 
+--> FAIRE LE COMMANDE QUIT
+
 --> login
     Encoder le mdp
 

@@ -16,6 +16,7 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <signal.h>
+#include <netinet/tcp.h>
 
 
 #define TRANS_SIZE 2047

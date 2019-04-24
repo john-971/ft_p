@@ -32,8 +32,11 @@ int			get_command(int sock, t_trame trame, t_info *info)
 
 		if (ft_strcmp(trame.value, OK) == 0)
 		{
-			if (send_file(fd, sock, size, T_GET) == RET_OK)
+			if (send_file(fd, sock, size, T_GET) == RET_OK){
+//				sleep(5);
 				send_message(T_MSG_OK, GET_OK, sock);
+			}
+
 			else
 				return (-1);
 		}

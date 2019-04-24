@@ -38,7 +38,7 @@ void				ls_command(int sock)
 
 int				manage_command(int cs, t_trame trame, t_info *info)
 {
-	printf("DEBUG : get_command => PATH : %s | SIZE : %llu\n", trame.value, trame.size);
+	printf("DEBUG : MANAGE COMMAND => TYPE : %s | VALUE : %s\n", trame.type, trame.value);
 	if (ft_memcmp(trame.type, T_LS, CMD_SIZE) == 0)
 	{
 		printf("DEBUG : LS COMMAND\n");
