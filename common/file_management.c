@@ -63,13 +63,13 @@ int			send_file(int fd, int sock, off_t f_size, char *type)
 			print_error("SEND FILE ABORT");
 			return (RET_KO);
 		}
-		else if(ft_strcmp(trame.value, OK) == 0)
-		{
-			print_succes("IS OK !!!!!!!!");
-		}
-		else{
-			print_error("WTF IS NOT OK !!!!!!! ");
-		}
+//		else if(ft_strcmp(trame.value, OK) == 0)
+//		{
+//			print_succes("IS OK !!!!!!!!");
+//		}
+//		else{
+//			print_error("WTF IS NOT OK !!!!!!! ");
+//		}
 
 		if (type == T_PUT)
 			print_status_bar(curr_size, f_size);
@@ -101,14 +101,7 @@ int				recev_file(int sock, int fd, off_t f_size, char *type)
 		else
 			r = read_until_max(sock, buff, size_tmp);
 //			r = recv(sock, buff, size_tmp, 0);
-		if (r != FILE_SIZE)
-		{
-			print_error("OMMGGGGGGGGFGSDGSGSAGASGGARGAGARG");
-			printf("R VALUE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! %i\n", r);
-		}
-		else{
-//			print_succes("R is good");
-		}
+
 
 		if (r == -1)
 			return -1;
@@ -123,8 +116,8 @@ int				recev_file(int sock, int fd, off_t f_size, char *type)
 		send_command(type, OK, sock, i);
 //		print_succes("SEND COMMAND OK !!!!");
 //		printf("%i\n", i);
-//		if (type == T_GET)
-//			print_status_bar(curr_size, f_size);
+		if (type == T_GET)
+			print_status_bar(curr_size, f_size);
 		i++;
 	}
 	ft_putchar('\n');

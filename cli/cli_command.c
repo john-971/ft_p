@@ -59,8 +59,11 @@ int		parse_command(char *input, int sock)
 	ret = 0;
 
 	commands = ft_strsplit(input, ' ');
-	printf("PARSE COMMANDS : [0] : %s\n", commands[0]);
-	if (ft_strcmp(commands[0], "ls") == 0)
+	if (commands == NULL || commands[0] == NULL){
+		ret = 1;
+	}
+//	printf("PARSE COMMANDS : [0] : %s\n", commands[0]);
+	else if (ft_strcmp(commands[0], "ls") == 0)
 		send_command(T_LS, input, sock, 0);
 	else if (ft_strcmp(commands[0], "pwd") == 0)
 		send_command(T_PWD, input, sock, 0);
@@ -73,7 +76,6 @@ int		parse_command(char *input, int sock)
 	}
 	else if (ft_strcmp(commands[0], "get") == 0)
 	{
-
 		if (commands[1] && ft_strlen(commands[1]) > 0)
 			send_command(T_GET, commands[1], sock, 0);
 		else
@@ -92,6 +94,8 @@ int		parse_command(char *input, int sock)
 			ret = 1;
 		}
 	}
+	else if (ft_strcmp(commands[0], "quit") == 0)
+		ret = -1;
 	else
 	{
 		print_error(COMMAND_NOT_FOUND);

@@ -36,6 +36,7 @@
 #define T_LS  	"<LIS>"
 #define T_CD 	"<CWD>"
 #define T_PWD 	"<PWD>"
+#define T_BYE	"<BYE>"
 
 typedef struct 	s_trame
 {

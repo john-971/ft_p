@@ -21,7 +21,7 @@ int						manage_login(int sock)
 	if ((trame = listen_sock(sock)).error == 1)
 		return -1;
 	password = ft_strdup(trame.value);
-	if (ft_strstr(login, "john") != NULL && ft_strstr(password, "bobby") != NULL)
+	if (ft_strcmp(login, "john") == 0 && ft_strcmp(password, "bobby") == 0)
 	{
 		send_message(T_MSG_OK, GOOD_LOG, sock);
 		free(login);

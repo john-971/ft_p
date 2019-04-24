@@ -19,19 +19,23 @@ void					manage_login(int sock, char *msg_value)
 {
 	char 				*u_input;
 
+	u_input = NULL;
 	if (ft_memcmp(msg_value, V_LOGIN, ft_strlen(V_LOGIN)) == 0)
 		ft_putstr("Login :");
 	else if (ft_memcmp(msg_value, V_PASS, ft_strlen(V_PASS)) == 0)
 		ft_putstr("Password :");
 	get_next_line(0, &u_input);
-	if (ft_strlen(u_input) > 0)
+//	printf("1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! %s\n", u_input);
+//	ft_putendl(u_input);
+	if (u_input && ft_strlen(u_input) > 0)
 	{
 		send_command(T_LOG, u_input, sock, 0);
 		free(u_input);
 	}
 	else
 	{
-		free(u_input);
+		if (u_input)
+			free(u_input);
 		manage_login(sock, msg_value);
 	}
 }
@@ -142,23 +146,22 @@ int					parse_msg(t_trame trame, int sock, t_info *info)
 	return (0);
 }
 
-void					prompt(int sock, t_info	info)
+int					prompt(int sock, t_info	info)
 {
 	char 				*u_input;
+	int 				ret;
 
 	print_prompt(info.path);
 	get_next_line(0, &u_input);
 	if (ft_strlen(u_input) > 0)
 	{
-//		printf("PARSE COMMAND \n");
-		if (parse_command(u_input, sock) == 0)
-		{
-//			free(&u_input);
-			return ;
-		}
+		if ((ret = parse_command(u_input, sock)) == 0)
+			return (0);
+		if (ret == -1)
+			return (-1);
 	}
-//	free(&u_input);
 	prompt(sock, info);
+	return (0);
 }
 
 void					main_process(int m_sock)
@@ -166,6 +169,7 @@ void					main_process(int m_sock)
 
 	t_trame				trame;
 	t_info				info;
+	int 				ret;
 
 	ft_bzero(&trame, sizeof(t_trame));
 	ft_bzero(&info, sizeof(t_info));
@@ -176,9 +180,9 @@ void					main_process(int m_sock)
 			break;
 //		printf("DEBUG : %s\n", trame.type);
 		if (parse_msg(trame, m_sock, &info) == 0)
-		{
-			prompt(m_sock, info);
-		}
+			ret = prompt(m_sock, info);
+		if (ret == -1)
+			break ;
 //		printf("DEBUG : CORRECT TRANSMISSION\n");
 	}
 	close(m_sock);

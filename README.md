@@ -9,6 +9,7 @@ conception d'un serveur et d'un client ftp
 --> login
     Encoder le mdp
 
+
 --> General
     Changer la taille de value pour 1024 (moins de memoire sur la stack)
 
