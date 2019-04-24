@@ -15,10 +15,15 @@ void sig_fpe(int sig)
 	exit(EXIT_SUCCESS);
 }
 
-void					manage_login(int sock, char *msg_value)
+void					manage_login(int sock, char *msg_value, int max_try)
 {
 	char 				*u_input;
 
+	if (max_try == MAX_TRY)
+	{
+		print_error(ERR_MAXTRY);
+		exit(EXIT_SUCCESS);
+	}
 	u_input = NULL;
 	if (ft_memcmp(msg_value, V_LOGIN, ft_strlen(V_LOGIN)) == 0)
 		ft_putstr("Login :");
@@ -36,7 +41,7 @@ void					manage_login(int sock, char *msg_value)
 	{
 		if (u_input)
 			free(u_input);
-		manage_login(sock, msg_value);
+		manage_login(sock, msg_value, max_try + 1);
 	}
 }
 
@@ -105,7 +110,7 @@ int					parse_msg(t_trame trame, int sock, t_info *info)
 //	printf("DEBUG PARSE MESSAGE :type : %s | value : %s\n", trame.type, trame.value);
 	if (ft_memcmp(trame.type, T_LOG, CMD_SIZE) == 0)
 	{
-		manage_login(sock, trame.value);
+		manage_login(sock, trame.value, 0);
 		return (1);
 	}
 	else if (ft_memcmp(trame.type, T_LS, CMD_SIZE) == 0)
@@ -140,6 +145,12 @@ int					parse_msg(t_trame trame, int sock, t_info *info)
 		else
 			print_succes(trame.value);
 	}
+	else if (ft_memcmp(trame.type, T_BYE, CMD_SIZE) == 0)
+	{
+		print_error(ERR_MAXTRY);
+		return (-1);
+	}
+
 	else{
 		printf("DEBUG : TYPE UNKNOW => TYPE : %s , Value : %s \n", trame.type, trame.value);
 	}
@@ -158,7 +169,11 @@ int					prompt(int sock, t_info	info)
 		if ((ret = parse_command(u_input, sock)) == 0)
 			return (0);
 		if (ret == -1)
+		{
+			print_succes("adieu monde cruel .·´¯`(>▂<)´¯`·.");
 			return (-1);
+		}
+
 	}
 	prompt(sock, info);
 	return (0);
@@ -179,8 +194,12 @@ void					main_process(int m_sock)
 		if ((trame = listen_sock(m_sock)).error == 1)
 			break;
 //		printf("DEBUG : %s\n", trame.type);
-		if (parse_msg(trame, m_sock, &info) == 0)
+		if ((ret = parse_msg(trame, m_sock, &info)) == 0)
+		{
 			ret = prompt(m_sock, info);
+			if (ret == -1)
+				break ;
+		}
 		if (ret == -1)
 			break ;
 //		printf("DEBUG : CORRECT TRANSMISSION\n");

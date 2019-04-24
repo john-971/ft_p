@@ -23,6 +23,7 @@
 #define FILE_SIZE 2047
 #define RET_KO 1
 #define RET_OK 0
+#define MAX_TRY 100000
 
 #define T_MSG	"<MSG>"
 #define T_MSG_OK 0
@@ -73,6 +74,7 @@ typedef struct 	s_info
 #define ERROR_FILE_RECPT "Une erreur est surevenu dans la récupération du fichier"
 #define ERR_NAMETOOLONG "Le nom du fichier est trop long"
 #define ERR_CD "Retour a la racine"
+#define ERR_MAXTRY "Nombre de tentatives maximum atteint"
 
 #define ABORT "-1"
 #define OK "0"

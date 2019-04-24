@@ -7,12 +7,17 @@ void 					usage(char *str)
 	exit(EXIT_FAILURE);
 }
 
-int						manage_login(int sock)
+int						manage_login(int sock, int max_try)
 {
 	t_trame				trame;
 	char 				*login;
 	char 				*password;
 
+	if (max_try == MAX_TRY)
+	{
+		send_command(T_BYE, T_BYE, sock, 0);
+		return -1;
+	}
 	send_command(T_LOG, V_LOGIN, sock, 0);
 	if ((trame = listen_sock(sock)).error == 1)
 		return -1;
@@ -21,8 +26,10 @@ int						manage_login(int sock)
 	if ((trame = listen_sock(sock)).error == 1)
 		return -1;
 	password = ft_strdup(trame.value);
+	printf("ESSAI LOGIN %s | %s\n", login, password);
 	if (ft_strcmp(login, "john") == 0 && ft_strcmp(password, "bobby") == 0)
 	{
+		print_succes("LOGIN REUSSI !!!!!!");
 		send_message(T_MSG_OK, GOOD_LOG, sock);
 		free(login);
 		free(password);
@@ -33,7 +40,7 @@ int						manage_login(int sock)
 		free(login);
 		free(password);
 		send_message(T_MSG_KO, BAD_LOG, sock);
-		return manage_login(sock);
+		return manage_login(sock, max_try + 1);
 	}
 }
 
@@ -54,7 +61,7 @@ void					main_process(int m_sock, uint32_t cslen)
 		if (pid == 0)
 		{
 			printf("\033[0;33mClient connected [%i] \033[0m\n", cs);
-			if (manage_login(cs) == 0)
+			if (manage_login(cs, 0) == 0)
 			{
 				info.base_path = NULL;
 				info.path = NULL;
@@ -64,7 +71,7 @@ void					main_process(int m_sock, uint32_t cslen)
 				printf("\033[0;33mClient [%i], logged \033[0m\n", cs);
 				while (1)
 				{
-//					printf("DEBUG : ACTUAL PATH %s", info.path);
+					printf("DEBUG : ACTUAL PATH %s\n", info.path);
 					if ((trame = listen_sock(cs)).error == 1)
 						break;
 					if (manage_command(cs, trame, &info) == -1)
