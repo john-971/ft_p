@@ -81,6 +81,8 @@ typedef struct 	s_info
 #define OK "0"
 #define RETRY "1"
 
+#define SERVER 0
+
 #define GOOD_LOG "Login ok !"
 #define CWD_OK "Changement du répertoire de travail !"
 #define LS_GOOD "Récupération du contenu du répertoire"
@@ -139,6 +141,7 @@ void					print_error(char *msg);
 void					print_succes(char *msg);
 void					print_prompt(char *path);
 void					print_status_bar(off_t c_size, off_t f_size);
+void					usage(char *msg, int src);
 
 /**
  ** send_receive.c

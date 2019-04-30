@@ -2,12 +2,7 @@
 
 
 
-//attention au port qui peut etre deja pris
-void 					usage(char *str)
-{
-	printf("usage : %s <address> <port>", str);
-	exit(EXIT_FAILURE);
-}
+
 
 void sig_fpe(int sig)
 {
@@ -213,7 +208,7 @@ int 					main(int ac, char **av)
 	int 				m_sock;
 
 	if (ac != 3)
-		usage(av[0]);
+		usage(av[0], 1);
 	port = atoi(av[2]);
 	m_sock = create_client(av[1], port);
 	if (m_sock != -1)

@@ -46,3 +46,12 @@ void			print_status_bar(off_t c_size, off_t f_size)
 	free(percent);
 	ft_putstr("\033[0m");
 }
+
+void					usage(char *str, int src)
+{
+	if (src == SERVER)
+		printf("usage : %s <port>", str);
+	else
+		printf("usage : %s <address> <port>", str);
+	exit(EXIT_FAILURE);
+}
