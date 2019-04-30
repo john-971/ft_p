@@ -12,11 +12,10 @@
 
 #include "../includes/ft_p.h"
 
-
 void		send_message(uint8_t type_message, char *value, int sock)
 {
 	int		size;
-	t_trame trame;
+	t_trame	trame;
 
 	ft_bzero(&trame, sizeof(t_trame));
 	size = ft_strlen(value);
@@ -30,7 +29,8 @@ void		send_message(uint8_t type_message, char *value, int sock)
 
 void		send_command(char *type, char *value, int sock, off_t size)
 {
-	t_trame trame;
+	t_trame	trame;
+
 	ft_bzero(&trame, sizeof(t_trame));
 	ft_memcpy(trame.type, type, CMD_SIZE);
 	trame.type[5] = '\0';
@@ -40,11 +40,11 @@ void		send_command(char *type, char *value, int sock, off_t size)
 	send(sock, &trame, sizeof(trame), 0);
 }
 
-t_trame					listen_sock(int sock)
+t_trame		listen_sock(int sock)
 {
-	int					r;
-	char				*buff[sizeof(t_trame) + 1];
-	t_trame				*trame;
+	int		r;
+	char	*buff[sizeof(t_trame) + 1];
+	t_trame	*trame;
 
 	ft_bzero(buff, sizeof(t_trame) + 1);
 	r = recv(sock, buff, sizeof(t_trame), 0);
@@ -56,12 +56,12 @@ t_trame					listen_sock(int sock)
 		trame->error = 1;
 	}
 	trame->read = r;
-	return *trame;
+	return (*trame);
 }
 
-int						wait_response(int sock)
+int			wait_response(int sock)
 {
-	t_trame				trame;
+	t_trame	trame;
 
 	trame = listen_sock(sock);
 	if (trame.error == 1)
@@ -70,5 +70,3 @@ int						wait_response(int sock)
 		return (0);
 	return (1);
 }
-
-
