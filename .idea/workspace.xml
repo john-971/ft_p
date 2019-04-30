@@ -10,9 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9e6b680d-3f10-4d14-b3f3-5d25290e1c38" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/client" beforeDir="false" afterPath="$PROJECT_DIR$/client" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/send_receive.c" beforeDir="false" afterPath="$PROJECT_DIR$/common/send_receive.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/tools.c" beforeDir="false" afterPath="$PROJECT_DIR$/common/tools.c" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/includes/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -56,10 +54,10 @@
             </entry>
           </file>
           <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/common/send_receive.c">
+            <entry file="file://$PROJECT_DIR$/common/tools.c">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="210">
-                  <caret line="14" column="12" selection-start-line="14" selection-start-column="12" selection-end-line="14" selection-end-column="12" />
+                <state relative-caret-position="345">
+                  <caret line="23" column="5" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
                 </state>
               </provider>
             </entry>
@@ -90,7 +88,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>cmp</find>
       <find>T_CMD</find>
       <find>handle_connexion</find>
       <find>listen_sock</find>
@@ -120,6 +117,7 @@
       <find>wait_response</find>
       <find>usage</find>
       <find>usa</find>
+      <find>get_name_from_path</find>
     </findStrings>
     <replaceStrings>
       <replace>info-&gt;</replace>
@@ -147,7 +145,6 @@
         <option value="$PROJECT_DIR$/cli/command.c" />
         <option value="$PROJECT_DIR$/cli/output.c" />
         <option value="$PROJECT_DIR$/out" />
-        <option value="$PROJECT_DIR$/common/tools.c" />
         <option value="$PROJECT_DIR$/libft/srcs/get_next_line.h" />
         <option value="$PROJECT_DIR$/get_next_line.c" />
         <option value="$PROJECT_DIR$/libft/includes/libft.h" />
@@ -170,6 +167,7 @@
         <option value="$PROJECT_DIR$/includes/ft_p.h" />
         <option value="$PROJECT_DIR$/common/output.c" />
         <option value="$PROJECT_DIR$/common/send_receive.c" />
+        <option value="$PROJECT_DIR$/common/tools.c" />
       </list>
     </option>
   </component>
@@ -197,26 +195,6 @@
             <path>
               <item name="ft_p" type="b2602c69:ProjectViewProjectNode" />
               <item name="ft_p" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ft_p" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ft_p" type="462c0819:PsiDirectoryNode" />
-              <item name="cli" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ft_p" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ft_p" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ft_p" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ft_p" type="462c0819:PsiDirectoryNode" />
-              <item name="includes" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ft_p" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ft_p" type="462c0819:PsiDirectoryNode" />
-              <item name="serveur" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -296,12 +274,12 @@
       <workItem from="1556125256508" duration="739000" />
       <workItem from="1556129955021" duration="5483000" />
       <workItem from="1556607337256" duration="7144000" />
-      <workItem from="1556625278943" duration="1578000" />
+      <workItem from="1556625278943" duration="1713000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="174939000" />
+    <option name="totallyTimeSpent" value="175074000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="2560" height="1440" extended-state="0" />
@@ -445,13 +423,6 @@
     <entry file="file://$PROJECT_DIR$/libft/srcs/ft_memchr.c">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/common/tools.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/libft/srcs/ft_strsub.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
@@ -590,6 +561,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/common/send_receive.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="12" selection-start-line="14" selection-start-column="12" selection-end-line="14" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Makefile">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
@@ -597,10 +575,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/common/send_receive.c">
+    <entry file="file://$PROJECT_DIR$/common/tools.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="12" selection-start-line="14" selection-start-column="12" selection-end-line="14" selection-end-column="12" />
+        <state relative-caret-position="345">
+          <caret line="23" column="5" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
         </state>
       </provider>
     </entry>
