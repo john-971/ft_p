@@ -12,16 +12,34 @@
 
 #include "../includes/ft_p.h"
 
-int			check_arg(char *arg)
+int				check_arg(char *arg)
 {
 	if (ft_strchr(arg, '/') == NULL)
 		return (0);
 	return (1);
 }
 
-int			get_command(int sock, t_trame trame, t_info *info)
+int				manage_get(t_trame trame, int fd, int sock, off_t size)
 {
-	int 		fd;
+	if (trame.error == -1)
+	{
+		close(fd);
+		return (-1);
+	}
+	if (ft_strcmp(trame.value, OK) == 0)
+	{
+		if (send_file(fd, sock, size, T_GET) == RET_OK)
+			send_message(T_MSG_OK, GET_OK, sock);
+		else
+			return (-1);
+	}
+	close(fd);
+	return (RET_OK);
+}
+
+int				get_command(int sock, t_trame trame)
+{
+	int			fd;
 	off_t		size;
 
 	if (check_arg(trame.value) == 1)
@@ -32,19 +50,8 @@ int			get_command(int sock, t_trame trame, t_info *info)
 			return (RET_KO);
 		send_command(T_GET, trame.value, sock, size);
 		trame = listen_sock(sock);
-		if (trame.error == -1)
-		{
-			close(fd);
+		if (manage_get(trame, fd, sock, size) == -1)
 			return (-1);
-		}
-		if (ft_strcmp(trame.value, OK) == 0)
-		{
-			if (send_file(fd, sock, size, T_GET) == RET_OK)
-				send_message(T_MSG_OK, GET_OK, sock);
-			else
-				return (-1);
-		}
-		close(fd);
 	}
 	else
 	{
@@ -56,8 +63,8 @@ int			get_command(int sock, t_trame trame, t_info *info)
 
 int				put_command(int sock, t_trame trame)
 {
-	int 			fd;
-	int 			ret;
+	int			fd;
+	int			ret;
 
 	if ((fd = open(trame.value, O_CREAT | O_RDWR | O_TRUNC, 0777)) != -1)
 	{

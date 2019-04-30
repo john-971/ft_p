@@ -56,7 +56,7 @@ int				manage_command(int cs, t_trame trame, t_info *info)
 	else if (ft_memcmp(trame.type, T_CD, CMD_SIZE) == 0)
 		cd_command(cs, trame, info);
 	else if (ft_memcmp(trame.type, T_GET, CMD_SIZE) == 0)
-		return (get_command(cs, trame, info));
+		return (get_command(cs, trame));
 	else if (ft_memcmp(trame.type, T_PUT, CMD_SIZE) == 0)
 		return (put_command(cs, trame));
 	else
