@@ -76,6 +76,7 @@ typedef struct 	s_info
 #define ERR_CD "Retour a la racine"
 #define ERR_MAXTRY "Nombre de tentatives maximum atteint"
 #define ERR_LISTENSOCK "Erreur dans l'ecoute de la socket"
+#define ERR_GETPATH "Merci de donner un nom de fichier et nom un path"
 
 #define ABORT "-1"
 #define OK "0"
