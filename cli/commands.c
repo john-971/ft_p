@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   commands.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jandreu <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/30 16:39:36 by jandreu           #+#    #+#             */
+/*   Updated: 2019/04/30 16:39:40 by jandreu          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/ft_p.h"
 
-void					manage_ls(int sock)
+void			manage_ls(int sock)
 {
-	char				buff[TRANS_SIZE + 1];
-	int					r;
-	t_trame				*trame;
+	char		buff[TRANS_SIZE + 1];
+	int			r;
+	t_trame		*trame;
 
 	while ((r = recv(sock, buff, TRANS_SIZE, 0)) > 0)
 	{
@@ -22,16 +34,16 @@ void					manage_ls(int sock)
 		}
 		else
 			printf("%s", buff);
-		if(r < TRANS_SIZE)
+		if (r < TRANS_SIZE)
 			break ;
 	}
 	send_message(T_MSG_OK, OK, sock);
 }
 
-int					manage_get(t_trame trame, int sock)
+int				manage_get(t_trame trame, int sock)
 {
-	int 			fd;
-	int 			ret;
+	int			fd;
+	int			ret;
 
 	if ((fd = open(trame.value, O_CREAT | O_RDWR | O_TRUNC, 0777)) != -1)
 	{
