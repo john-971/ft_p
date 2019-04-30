@@ -10,7 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9e6b680d-3f10-4d14-b3f3-5d25290e1c38" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/cli/commands.c" beforeDir="false" afterPath="$PROJECT_DIR$/cli/commands.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cli/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/cli/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/includes/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -75,20 +76,11 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/cli/main.c">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="90">
-                  <caret line="6" column="1" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/cli/commands.c">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="675">
-                  <caret line="45" column="16" selection-start-line="45" selection-start-column="16" selection-end-line="45" selection-end-column="16" />
+                <state relative-caret-position="180">
+                  <caret line="12" column="29" selection-start-line="12" selection-start-column="29" selection-end-line="12" selection-end-column="29" />
                 </state>
               </provider>
             </entry>
@@ -181,13 +173,13 @@
         <option value="$PROJECT_DIR$/common/send_receive.c" />
         <option value="$PROJECT_DIR$/common/tools.c" />
         <option value="$PROJECT_DIR$/cli/cli_command.c" />
-        <option value="$PROJECT_DIR$/cli/main.c" />
         <option value="$PROJECT_DIR$/includes/ft_p.h" />
         <option value="$PROJECT_DIR$/serveur/file_operation.c" />
         <option value="$PROJECT_DIR$/Makefile" />
         <option value="$PROJECT_DIR$/serveur/server_command.c" />
         <option value="$PROJECT_DIR$/cli/parse_msg.c" />
         <option value="$PROJECT_DIR$/cli/commands.c" />
+        <option value="$PROJECT_DIR$/cli/main.c" />
       </list>
     </option>
   </component>
@@ -304,12 +296,12 @@
       <workItem from="1556125256508" duration="739000" />
       <workItem from="1556129955021" duration="5483000" />
       <workItem from="1556607337256" duration="7144000" />
-      <workItem from="1556625278943" duration="5645000" />
+      <workItem from="1556625278943" duration="5955000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="179006000" />
+    <option name="totallyTimeSpent" value="179316000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="2560" height="1440" extended-state="0" />
@@ -591,13 +583,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cli/main.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="1" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cli/parse_msg.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1233">
@@ -621,8 +606,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cli/commands.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="45" column="16" selection-start-line="45" selection-start-column="16" selection-end-line="45" selection-end-column="16" />
+        <state relative-caret-position="660">
+          <caret line="44" column="16" selection-start-line="44" selection-start-column="16" selection-end-line="44" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cli/main.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="29" selection-start-line="12" selection-start-column="29" selection-end-line="12" selection-end-column="29" />
         </state>
       </provider>
     </entry>
