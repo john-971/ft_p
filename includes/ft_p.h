@@ -23,7 +23,7 @@
 #define FILE_SIZE 2047
 #define RET_KO 1
 #define RET_OK 0
-#define MAX_TRY 100000
+#define MAX_TRY 5
 
 #define T_MSG	"<MSG>"
 #define T_MSG_OK 0
@@ -41,19 +41,19 @@
 
 typedef struct 	s_trame
 {
-	char		type[6];
 	uint8_t 	type_msg;
+	char		type[6];
 	char 		value[2048];
-	off_t		size;
 	int			read;
 	int			error;
+	off_t		size;
 }				t_trame;
 
 typedef struct 	s_info
 {
 	char		*base_path;
-	int			b_path_lvl;
 	char		*path;
+	int			b_path_lvl;
 }				t_info;
 
 
@@ -75,6 +75,7 @@ typedef struct 	s_info
 #define ERR_NAMETOOLONG "Le nom du fichier est trop long"
 #define ERR_CD "Retour a la racine"
 #define ERR_MAXTRY "Nombre de tentatives maximum atteint"
+#define ERR_LISTENSOCK "Erreur dans l'ecoute de la socket"
 
 #define ABORT "-1"
 #define OK "0"

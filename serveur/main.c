@@ -26,10 +26,8 @@ int						manage_login(int sock, int max_try)
 	if ((trame = listen_sock(sock)).error == 1)
 		return -1;
 	password = ft_strdup(trame.value);
-	printf("ESSAI LOGIN %s | %s\n", login, password);
 	if (ft_strcmp(login, "john") == 0 && ft_strcmp(password, "bobby") == 0)
 	{
-		print_succes("LOGIN REUSSI !!!!!!");
 		send_message(T_MSG_OK, GOOD_LOG, sock);
 		free(login);
 		free(password);
