@@ -116,7 +116,7 @@ char					*set_path(char *path);
 /**
  ** file_operation.c
 **/
-int						get_command(int sock, t_trame trame);
+int						get_command(int sock, t_trame tramef);
 int						put_command(int sock, t_trame trame);
 
 
