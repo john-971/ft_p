@@ -1,2 +1,0 @@
-/Users/jandreu/ft_p/includes/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/jandreu/ft_p/includes/cmake-build-debug/CMakeFiles/edit_cache.dir
