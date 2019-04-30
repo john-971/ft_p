@@ -16,17 +16,23 @@ int					prompt(int sock, t_info info)
 {
 	char			*u_input;
 	int				ret;
+	char			**commands;
 
 	print_prompt(info.path);
 	get_next_line(0, &u_input);
 	if (ft_strlen(u_input) > 0)
 	{
-		if ((ret = parse_command(u_input, sock)) == 0)
-			return (0);
-		if (ret == -1)
+		commands = ft_strsplit(u_input, ' ');
+		free(u_input);
+		if (commands != NULL && commands[0] != NULL)
 		{
-			print_succes("adieu monde cruel .·´¯`(>▂<)´¯`·.");
-			return (-1);
+			if ((ret = parse_command(commands, sock)) == 0)
+				return (0);
+			if (ret == -1)
+			{
+				print_succes("adieu monde cruel .·´¯`(>▂<)´¯`·.");
+				return (-1);
+			}
 		}
 	}
 	prompt(sock, info);

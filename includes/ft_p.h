@@ -128,7 +128,7 @@ int						put_command(int sock, t_trame trame);
 /**
  ** cli_command.c
 **/
-int						parse_command(char *input, int sock);
+int						parse_command(char **commands, int sock);
 void					init_path(t_info *info, int sock);
 
 /*
