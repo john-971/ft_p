@@ -12,7 +12,7 @@
 
 #include "../includes/ft_p.h"
 
-char	*get_error()
+char	*get_error(void)
 {
 	if (errno == ENOTDIR)
 		return (ERR_NOTDIR);
@@ -23,5 +23,5 @@ char	*get_error()
 	if (errno == ENAMETOOLONG)
 		return (ERR_NAMETOOLONG);
 	else
-		return (strerror(errno));
+		return (ERROR_DEFAULT);
 }

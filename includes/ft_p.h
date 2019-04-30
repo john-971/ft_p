@@ -70,7 +70,7 @@ typedef struct 	s_info
 #define ERR_NOTDIR "Un élément du chemin d'accès n'est pas un répertoire"
 #define ERR_ACL "Impossible de lire ou de parcourir un composant du chemin"
 #define ERR_ENOENT "Le fichier n'existe pas."
-#define ERROR_DEFAULT "Une erreur est surevenu"
+#define ERROR_DEFAULT "Une erreur est survenu"
 #define ERROR_FILE_RECPT "Une erreur est surevenu dans la récupération du fichier"
 #define ERR_NAMETOOLONG "Le nom du fichier est trop long"
 #define ERR_CD "Retour a la racine"
