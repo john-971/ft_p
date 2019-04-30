@@ -17,7 +17,7 @@ void				manage_ls_child(int sock)
 	char			*test[3];
 
 	test[0] = "ls";
-	test[1] = "-l";
+	test[1] = "-la";
 	test[2] = NULL;
 	send_command(T_LS, OK, sock, 0);
 	dup2(sock, STDOUT_FILENO);

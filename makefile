@@ -35,6 +35,8 @@ SRC_SERVER = ./serveur/main.c \
 
 SRC_CLIENT = ./cli/main.c \
 			./cli/cli_command.c \
+			./cli/commands.c \
+			./cli/parse_msg.c \
 			./common/output.c \
 			./common/send_receive.c \
 			./common/create_socket.c \

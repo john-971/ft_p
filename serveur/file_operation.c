@@ -19,7 +19,7 @@ int				check_arg(char *arg)
 	return (1);
 }
 
-int				manage_get(t_trame trame, int fd, int sock, off_t size)
+int				get_command2(t_trame trame, int fd, int sock, off_t size)
 {
 	if (trame.error == -1)
 	{
@@ -50,7 +50,7 @@ int				get_command(int sock, t_trame trame)
 			return (RET_KO);
 		send_command(T_GET, trame.value, sock, size);
 		trame = listen_sock(sock);
-		if (manage_get(trame, fd, sock, size) == -1)
+		if (get_command2(trame, fd, sock, size) == -1)
 			return (-1);
 	}
 	else

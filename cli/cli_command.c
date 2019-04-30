@@ -7,8 +7,6 @@ int				manage_put(int sock, char *file_path)
 	off_t		size;
 	t_trame		trame;
 
-//	printf("DEBUG : get_command => PATH : %s | SIZE : %llu\n", trame.value, trame.size);
-
 	if ((fd = open(file_path, O_RDWR)) != -1)
 	{
 		if ((size = get_file_size(fd, sock)) == -1)

@@ -131,6 +131,18 @@ int						put_command(int sock, t_trame trame);
 int						parse_command(char *input, int sock);
 void					init_path(t_info *info, int sock);
 
+/*
+ ** parse_msg.c
+*/
+int						parse_msg(t_trame trame, int sock, t_info *info);
+
+/*
+ * commands.c
+ */
+void					manage_ls(int sock);
+int						manage_get(t_trame trame, int sock);
+
+
 /**
  ** ===================== COMMON
 **/
