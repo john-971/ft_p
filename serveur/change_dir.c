@@ -28,7 +28,6 @@ char				*set_path(char *path)
 	if (path)
 		free(path);
 	path = ft_strdup(cwd);
-	print_succes(path);
 	return (path);
 }
 

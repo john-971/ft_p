@@ -1,14 +1,10 @@
 # ft_p
-conception d'un serveur et d'un client ftp
 
-
-//A FAIRE
-
---> login
-    Encoder le mdp
-
--->Norme
-    penser a mettre un return 1 dans print error comme ca dans cli_command je peux faire un return print_error
-    Renomer les nom des defines d'erreur et de confirmation
-
--REMETTRE LA COMPILATION DE LA LIBFT DANS LE MAKEFILE !!!!!!!!!!!!!
+Ce projet consiste à faire un client et un serveur FTP (File Transfert Protocol) qui
+permettent d’envoyer et recevoir des fichiers entre un ou plusieurs clients et le serveur.
+Vous êtes néammoins libre du choix du protocole à utiliser (vous n’êtes pas obligé
+de respecter les RFC définissant FTP, vous pouvez inventer votre propre protocole de
+transfert de fichier). Vous devrez par contre quelque soit votre choix absolument obtenir
+une cohérence entre votre client et votre serveur. Ils doivent communiquer correctement
+ensemble.
+La communication entre le client et le serveur se fera en TCP/IP (v4).
